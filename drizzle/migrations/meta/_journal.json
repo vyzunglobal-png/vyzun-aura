@@ -8,6 +8,13 @@
       "when": 1794485465545,
       "tag": "0000_vyzun_core_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794485482001,
+      "tag": "0001_vyzun_function_grants",
+      "breakpoints": true
     }
   ]
 }
