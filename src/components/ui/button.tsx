@@ -9,6 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        linkCopy: "secret-link-action secret-link-copy",
+        linkShare: "secret-link-action secret-link-share",
+        reelCategory: "reel-category",
+        reelCreate: "reel-create",
+        reelVibe: "reel-vibe",
+        reelAction: "reel-action",
+        aiCta: "ai-cta rounded-full",
+        aiCtaPremium: "ai-cta ai-cta-premium rounded-full",
+        studio: "studio-btn",
+        studioPrimary: "studio-btn studio-btn-primary",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:

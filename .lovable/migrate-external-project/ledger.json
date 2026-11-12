@@ -1,0 +1,11 @@
+[
+ {"capability":"code","source":"github vyzunglobal-png/vyzun-aura-connect (TanStack Start, same template)","outcome":"migrate","status":"in_progress","next_action":"copy src, public, db, drizzle, supabase migrations, config"},
+ {"capability":"schema","source":"drizzle/migrations 0000-0003 (Lovable Cloud Postgres)","outcome":"migrate","status":"pending","next_action":"apply migrations to new Lovable Cloud"},
+ {"capability":"records","source":"source Lovable Cloud database","outcome":"migrate","status":"pending","next_action":"request CSV/JSON exports after preview"},
+ {"capability":"auth identities","source":"source Lovable Cloud auth users","outcome":"migrate","status":"pending","next_action":"request user export (ids, emails) after preview"},
+ {"capability":"authorization","source":"RLS + user_roles in migrations","outcome":"migrate","status":"pending","next_action":"applied with schema"},
+ {"capability":"ai","source":"src/lib/ai (Lovable AI gateway)","outcome":"migrate","status":"pending","next_action":"verify companion function after Cloud enabled"},
+ {"capability":"payments","source":"none integrated (UI offers only)","outcome":"not_present","status":"accepted","next_action":"none"},
+ {"capability":"storage file bytes","source":"none detected","outcome":"not_present","status":"pending","next_action":"confirm no storage buckets in migrations"},
+ {"capability":"verification","source":"tests in src/test","outcome":"migrate","status":"pending","next_action":"run vitest + browser check"}
+]
