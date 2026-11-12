@@ -728,3 +728,16 @@
 .trophy-row::-webkit-scrollbar { display: none; }
 .trophy-badge { border-color: var(--glass-border); background: var(--glass); }
 .trophy-badge-icon { background-image: var(--gradient-vyzun); color: var(--primary-foreground); box-shadow: var(--glow-cyan); }
+
+/* Neon QR scanner */
+.qr-panel { background: color-mix(in oklab, var(--background) 88%, transparent); border: 1px solid var(--glass-border); backdrop-filter: blur(18px); box-shadow: var(--glow-neon), var(--glow-cyan); }
+.qr-toggle { background: var(--glass); border: 1px solid var(--glass-border); }
+.qr-toggle-btn { color: var(--muted-foreground); transition: background 180ms ease, color 180ms ease; }
+.qr-toggle-btn[aria-selected="true"] { background-image: var(--gradient-vyzun); color: var(--primary-foreground); box-shadow: var(--glow-cyan); }
+.qr-viewfinder { background: var(--secondary); box-shadow: inset 0 0 40px -10px var(--vz-violet); }
+.qr-corner { border-color: var(--vz-cyan); filter: drop-shadow(0 0 6px var(--vz-cyan)); }
+.qr-laser { top: 10%; background: var(--gradient-vyzun); box-shadow: 0 0 14px var(--vz-magenta); animation: qr-laser 2.2s ease-in-out infinite alternate; }
+@keyframes qr-laser { to { top: 88%; } }
+.qr-own { background: oklch(1 0 0); box-shadow: 0 0 0 2px var(--vz-cyan), 0 0 30px -4px var(--vz-magenta); }
+@media (prefers-reduced-motion: reduce) { .qr-laser { animation: none; top: 50%; } }
+.qr-header-btn { border: 1px solid color-mix(in oklab, var(--vz-cyan) 55%, transparent); color: var(--vz-cyan); box-shadow: var(--glow-cyan); }

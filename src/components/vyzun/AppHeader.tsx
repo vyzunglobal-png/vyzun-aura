@@ -1,7 +1,7 @@
-import { Bell, Search } from "lucide-react";
+import { Bell, QrCode, Search } from "lucide-react";
 import { Logo, Wordmark } from "./Logo";
 
-export function AppHeader({ onSearch }: { onSearch?: () => void }) {
+export function AppHeader({ onSearch, onQr }: { onSearch?: () => void; onQr?: () => void }) {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between bg-background/70 px-5 py-3 backdrop-blur-xl">
       <div className="flex items-center gap-2.5">
@@ -9,6 +9,15 @@ export function AppHeader({ onSearch }: { onSearch?: () => void }) {
         <Wordmark className="text-xl" />
       </div>
       <div className="flex items-center gap-2">
+        {onQr && (
+          <button
+            onClick={onQr}
+            aria-label="Scan or show QR code"
+            className="qr-header-btn grid h-10 w-10 place-items-center rounded-xl tap active:tap-active"
+          >
+            <QrCode className="h-4.5 w-4.5" />
+          </button>
+        )}
         <button
           onClick={onSearch}
           aria-label="Search VYZUN"
