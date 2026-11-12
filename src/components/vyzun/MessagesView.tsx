@@ -12,11 +12,24 @@ import { Link } from "@tanstack/react-router";
 import { ChatComposer } from "./ChatComposer";
 import { ActionDialog } from "./ActionDialog";
 import { PaidActionSheet, type PaidAction } from "./PaidActionSheet";
+import { GUIDE_ANSWERS, GUIDE_STARTERS, type GuideAction } from "@/lib/vyzun-guide";
 
-const TASKS = [{ key: "hooks", label: "Video hooks" }, { key: "scripts", label: "Scripts" }, { key: "bio", label: "Bio" }, { key: "safety", label: "Brand safety" }] as const;
+const VIP_HALO: PaidAction = { title: "VIP Halo", price: "$4.99/mo", description: "A glowing VIP Halo on your Campus Map pin and profile. It appears only after a verified payment." };
+
+function GuideActions({ actions, onHalo }: { actions: GuideAction[]; onHalo: () => void }) {
+  return <div className="mt-3 flex flex-wrap gap-2" aria-label="Quick actions">{actions.map(action => {
+    if (action === "map") return <Button key={action} asChild size="sm" variant="aiCta"><Link to="/secrets" search={{ tab: "map" }}><MapPin />Open Campus Map</Link></Button>;
+    if (action === "scan") return <Button key={action} asChild size="sm" variant="aiCta"><Link to="/"><ScanFace />Scan Face Now</Link></Button>;
+    if (action === "halo") return <Button key={action} size="sm" variant="aiCtaPremium" onClick={onHalo}><Crown />Buy VIP Halo</Button>;
+    if (action === "reels") return <Button key={action} asChild size="sm" variant="aiCta"><Link to="/reels" search={{}}>Open Reels</Link></Button>;
+    return <Button key={action} asChild size="sm" variant="aiCta"><Link to="/secrets" search={{}}>Open Secrets</Link></Button>;
+  })}</div>;
+}
+
+const TASKS = [{ key: "guide", label: "App guide" }, { key: "hooks", label: "Video hooks" }, { key: "scripts", label: "Scripts" }, { key: "bio", label: "Bio" }, { key: "safety", label: "Brand safety" }] as const;
 type Task = typeof TASKS[number]["key"];
 
-const ICEBREAKERS = ["How to reveal crush?", "What is Aura Score?", "How to pin on Campus Map?"] as const;
+const ICEBREAKERS = GUIDE_STARTERS;
 
 type ChatRow = { id: string; kind: string; last_message_at: string | null };
 type PeopleMap = Record<string, { username: string; avatar_url: string | null }>;
@@ -35,11 +48,11 @@ export function MessagesView() {
   const { session } = useVyzunSession();
   const ask = useServerFn(askVyzunAI);
   const [active, setActive] = useState<string | null>(null);
-  const [task, setTask] = useState<Task>("hooks");
+  const [task, setTask] = useState<Task>("guide");
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [answers, setAnswers] = useState<{ prompt: string; text: string }[]>([]);
+  const [answers, setAnswers] = useState<{ prompt: string; text: string; actions?: GuideAction[] }[]>([]);
   const [search, setSearch] = useState("");
   const [battle, setBattle] = useState(false);
   const [paid, setPaid] = useState<PaidAction | null>(null);
@@ -104,7 +117,10 @@ export function MessagesView() {
   function openAI(prompt?: string) {
     setActive("ai");
     setNotice(null);
-    if (prompt) setDraft(prompt);
+    if (!prompt) return;
+    const guide = GUIDE_ANSWERS[prompt as keyof typeof GUIDE_ANSWERS];
+    if (guide) { setTask("guide"); setAnswers(items => [...items, { prompt, text: guide.text, actions: guide.actions }]); }
+    else setDraft(prompt);
   }
 
   return <section className="space-y-4">
@@ -140,10 +156,10 @@ export function MessagesView() {
     </> : <>
       <div className="flex items-center justify-between gap-3"><Button variant="ghost" size="sm" onClick={() => { setActive(null); setNotice(null); }}><ArrowLeft className="h-4 w-4" />All chats</Button><h2 className="text-sm font-semibold">{active === "ai" ? "VYZUN AI" : "Private chat"}</h2>{active !== "ai" && <div className="flex gap-1"><Button variant="outline" size="icon" aria-label="Audio call" onClick={() => setNotice("Calling is not connected yet. No call was placed.")}><Phone className="h-4 w-4" /></Button><Button variant="outline" size="icon" aria-label="Video call" onClick={() => setNotice("Video calling is not connected yet. No call was placed.")}><Video className="h-4 w-4" /></Button></div>}</div>
       {active === "ai" ? <>
-        <div className="chat-ambience rounded-lg border border-magenta/30 p-4"><p className="text-sm leading-relaxed">Hey, I’m VYZUN AI ✨ What’s your next vibe? Let’s create something that feels like you.</p><div className="mt-3 flex flex-wrap gap-2">{["Give me a fun icebreaker", "Write a viral Reel hook", "Help me refresh my bio"].map(prompt => <Button key={prompt} size="sm" variant="outline" className="h-auto whitespace-normal text-left text-xs" onClick={() => setDraft(prompt)}>{prompt}</Button>)}</div><div className="mt-3 flex flex-wrap gap-2" aria-label="Quick actions"><Button asChild size="sm" variant="aiCta"><Link to="/secrets" search={{ tab: "map" }}><MapPin />Open Campus Map</Link></Button><Button asChild size="sm" variant="aiCta"><Link to="/"><ScanFace />Scan Face Now</Link></Button><Button size="sm" variant="aiCtaPremium" onClick={() => setPaid({ title: "VIP Halo", price: "$4.99/mo", description: "A glowing VIP Halo on your Campus Map pin and profile. It appears only after a verified payment." })}><Crown />Buy VIP Halo</Button></div></div>
+        <div className="chat-ambience rounded-lg border border-magenta/30 p-4"><p className="text-sm leading-relaxed">Hey, I’m VYZUN AI ✨ your Verified Vibe Guide. Ask me anything about Reels, Face & QR scanning, Secrets, Aura Cards, the Campus Map, the Battle Pass or staying safe.</p><div className="mt-3 flex flex-wrap gap-2">{ICEBREAKERS.map(prompt => <Button key={prompt} size="sm" variant="outline" className="h-auto whitespace-normal rounded-full text-left text-xs" onClick={() => openAI(prompt)}>{prompt}</Button>)}</div><GuideActions actions={["map", "scan", "halo"]} onHalo={() => setPaid(VIP_HALO)} /></div>
         <div className="flex flex-wrap gap-2" role="group" aria-label="AI task">{TASKS.map(t => <Button key={t.key} size="sm" variant={task === t.key ? "default" : "outline"} onClick={() => setTask(t.key)}>{t.label}</Button>)}</div>
-        <div className="min-h-40 space-y-4" aria-live="polite">{answers.map((answer, i) => <div key={i} className="space-y-2"><p className="ml-auto max-w-[90%] rounded-xl bg-primary px-4 py-3 text-sm text-primary-foreground">{answer.prompt}</p><p className="whitespace-pre-wrap rounded-xl border border-glass-border px-4 py-3 text-sm leading-relaxed">{answer.text}</p></div>)}{busy && <p role="status" className="animate-pulse text-sm text-cyan">VYZUN AI is thinking…</p>}</div>
-        <form onSubmit={e => { e.preventDefault(); void send(); }} className="flex items-end gap-2"><textarea value={draft} onChange={e => setDraft(e.target.value)} maxLength={2000} rows={2} aria-label="Message VYZUN AI" placeholder="What are you creating?" className="min-w-0 flex-1 resize-none rounded-xl border border-glass-border bg-background px-3 py-2 text-sm" /><Button type="submit" aria-label="Send to VYZUN AI" disabled={busy || !draft.trim()} className="bg-gradient-secret h-11 w-11 shrink-0 p-0"><Send className="h-4 w-4" /></Button></form>
+        <div className="min-h-40 space-y-4" aria-live="polite">{answers.map((answer, i) => <div key={i} className="space-y-2"><p className="ml-auto max-w-[90%] rounded-xl bg-primary px-4 py-3 text-sm text-primary-foreground">{answer.prompt}</p><div className="rounded-xl border border-glass-border px-4 py-3"><p className="whitespace-pre-wrap text-sm leading-relaxed">{answer.text}</p>{answer.actions && <GuideActions actions={answer.actions} onHalo={() => setPaid(VIP_HALO)} />}</div></div>)}{busy && <p role="status" className="animate-pulse text-sm text-cyan">VYZUN AI is thinking…</p>}</div>
+        <form onSubmit={e => { e.preventDefault(); void send(); }} className="flex items-end gap-2"><textarea value={draft} onChange={e => setDraft(e.target.value)} maxLength={2000} rows={2} aria-label="Message VYZUN AI" placeholder={task === "guide" ? "Ask about VYZUN…" : "What are you creating?"} className="min-w-0 flex-1 resize-none rounded-xl border border-glass-border bg-background px-3 py-2 text-sm" /><Button type="submit" aria-label="Send to VYZUN AI" disabled={busy || !draft.trim()} className="bg-gradient-secret h-11 w-11 shrink-0 p-0"><Send className="h-4 w-4" /></Button></form>
       </> : <>
         <div className="chat-ambience rounded-lg border border-cyan/30 p-3"><p className="text-xs font-semibold text-cyan">Aura Match · —</p><div className="mt-2 h-1 rounded-full bg-muted" /><p className="mt-2 text-[11px] text-muted-foreground">Compatibility needs both participants’ shared Aura Cards.</p></div>
         <Button variant="outline" className="h-auto w-full whitespace-normal border-magenta/40 py-3" onClick={() => setPaid({ title: "Instant Identity Unmask", price: "$4.99", description: "Identity is revealed only with both participants’ consent and verified payment. No verified mutual match is available." })}>$4.99 · Instant Identity Unmask</Button>

@@ -17,7 +17,10 @@ import { moderateMessage } from "@/lib/message-safety.functions";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/secrets/")({
-  validateSearch: (search: Record<string, unknown>): { to?: string } => typeof search['to'] === "string" ? { to: search['to'].replace(/^@/, "").slice(0, 30) } : {},
+  validateSearch: (search: Record<string, unknown>): { to?: string; tab?: "inbox" | "feed" | "map" } => ({
+    ...(typeof search['to'] === "string" ? { to: search['to'].replace(/^@/, "").slice(0, 30) } : {}),
+    ...(search['tab'] === "inbox" || search['tab'] === "feed" || search['tab'] === "map" ? { tab: search['tab'] } : {}),
+  }),
   head: () => ({
     meta: [
       { title: "VYZUN Secrets — Anonymous Inbox, Vibe Feed & Campus Map" },
@@ -39,7 +42,7 @@ export const Route = createFileRoute("/secrets/")({
 
 function SecretsPage() {
   const { state, update } = useVyzun();
-  const { to } = Route.useSearch();
+  const { to, tab: initialTab } = Route.useSearch();
   const { session } = useVyzunSession();
   const moderation = useServerFn(moderateMessage);
   const [posting, setPosting] = useState(false);
@@ -60,7 +63,8 @@ function SecretsPage() {
       setMediaError(error ? "Could not send reply." : "Private reply sent.");
     } catch { setMediaError("Safety checks are unavailable. Reply was not sent."); }
   }
-  const [tab, setTab] = useState<"inbox" | "feed" | "map">("inbox");
+  const [tab, setTab] = useState<"inbox" | "feed" | "map">(initialTab ?? "inbox");
+  useEffect(() => { if (initialTab) setTab(initialTab); }, [initialTab]);
   const [draft, setDraft] = useState("");
   const [anon, setAnon] = useState(true);
   const [paid, setPaid] = useState<PaidAction | null>(null);

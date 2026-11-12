@@ -741,3 +741,10 @@
 .qr-own { background: oklch(1 0 0); box-shadow: 0 0 0 2px var(--vz-cyan), 0 0 30px -4px var(--vz-magenta); }
 @media (prefers-reduced-motion: reduce) { .qr-laser { animation: none; top: 50%; } }
 .qr-header-btn { border: 1px solid color-mix(in oklab, var(--vz-cyan) 55%, transparent); color: var(--vz-cyan); box-shadow: var(--glow-cyan); }
+
+/* VYZUN AI quick-action CTAs */
+.ai-cta { border: 1px solid color-mix(in oklab, var(--vz-cyan) 55%, transparent); background: color-mix(in oklab, var(--vz-cyan) 10%, transparent); color: var(--foreground); box-shadow: 0 0 14px -6px var(--vz-cyan); }
+.ai-cta:hover { background: color-mix(in oklab, var(--vz-cyan) 18%, transparent); }
+.ai-cta-premium { border-color: color-mix(in oklab, var(--vz-gold) 70%, transparent); background: color-mix(in oklab, var(--vz-gold) 14%, transparent); box-shadow: 0 0 14px -6px var(--vz-gold); }
+.ai-cta-premium:hover { background: color-mix(in oklab, var(--vz-gold) 22%, transparent); }
+.ai-cta-premium svg { color: var(--vz-gold); }
