@@ -87,7 +87,7 @@ export function ReelSlide({ reel, liked, likeCount, muted, onToggleMute, onLike,
       <video ref={video} src={reel.video_url ?? undefined} poster={reel.thumbnail_url ?? undefined} muted={muted} loop playsInline preload="metadata" className="absolute inset-0 h-full w-full object-cover" />
       <div className="rv-scrim pointer-events-none absolute inset-x-0 bottom-0 h-3/5" />
 
-      <div className="absolute inset-0" onPointerUp={onStageTap} role="button" aria-label={paused ? "Play Reel" : "Pause Reel"} tabIndex={-1} />
+      <div className="absolute inset-0" onPointerUp={onStageTap} onKeyDown={e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); togglePlay(); } }} role="button" aria-label={paused ? "Play Reel" : "Pause Reel"} tabIndex={0} />
       {flash && <span aria-hidden className="rv-pause-flash pointer-events-none absolute inset-0 m-auto grid h-20 w-20 place-items-center rounded-full rv-play-ring">{flash === "pause" ? <Pause className="h-9 w-9" /> : <Play className="h-9 w-9" />}</span>}
       {paused && !flash && <span aria-hidden className="pointer-events-none absolute inset-0 m-auto grid h-20 w-20 place-items-center rounded-full rv-play-ring"><Play className="h-9 w-9" /></span>}
       {hearts.map(h => <Heart key={h.id} aria-hidden className="rv-heart-burst pointer-events-none absolute h-28 w-28 fill-current" style={{ left: h.x - 56, top: h.y - 56 }} />)}
