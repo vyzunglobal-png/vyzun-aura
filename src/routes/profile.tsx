@@ -8,7 +8,6 @@ import {
   QrCode,
   Settings,
   Sparkles,
-  Wallet2,
   Gem,
   Plane,
   Video,
@@ -133,20 +132,18 @@ function ProfilePage() {
         </div>
 
 
-        {isSelf && <div className="mt-4 space-y-2">
-          <Button variant="outline" onClick={() => setSheet("prime")} className="h-auto w-full justify-start gap-3 border-magenta/30 bg-glass py-2 text-left"><Crown className="text-gold" /><span className="min-w-0 flex-1"><span className="block text-xs font-semibold">VYZUN Platinum Pass</span><span className="block text-[10px] text-muted-foreground">$19.99 – $49.99/mo</span></span></Button>
-          <Button variant="outline" onClick={() => setSheet("creator")} className="h-auto w-full justify-start gap-3 border-cyan/30 bg-glass py-2 text-left"><Wallet2 className="text-cyan" /><span><span className="block text-xs font-semibold">Creator Dashboard</span><span className="block text-[10px] text-muted-foreground">Missions · earnings · analytics</span></span></Button>
-        </div>}
       </header>
 
       <main className="mx-auto mt-6 max-w-lg px-5">
         <section className="mb-5 border-y border-glass-border py-3">
           <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Crown className="h-5 w-5 text-gold" />Luxury Trophy Cabinet</h2>
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            {[{ name: "Virtual Crown", price: "$49", icon: Crown }, { name: "Private Jet", price: "$199", icon: Plane }, { name: "Diamond Aura", price: "$499", icon: Gem }].map(({ name, price, icon: Icon }) => <Button key={name} variant="outline"
+          <div className="trophy-row mt-3 flex snap-x gap-2.5 overflow-x-auto pb-1" role="list" aria-label="Trophy badges">
+            {[{ name: "Virtual Crown", price: "$49", icon: Crown }, { name: "Private Jet", price: "$199", icon: Plane }, { name: "Diamond Aura", price: "$499", icon: Gem }, { name: "VIP Halo", price: "$9.99", icon: Sparkles }].map(({ name, price, icon: Icon }) => <Button key={name} role="listitem" variant="outline"
               onClick={() => setPaid({ title: name, price, description: `Send a ${name} digital gift to an eligible creator. No physical item. Gifts appear only after verified payment.` })}
-              className="h-auto min-h-20 flex-col whitespace-normal border-cyan/30 bg-gradient-vyzun px-2 py-2 text-center">
-              <Icon className="mb-1 text-primary-foreground !size-6" /><span className="text-[10px] text-primary-foreground">{name}</span>
+              className="trophy-badge h-auto w-[5.5rem] shrink-0 snap-start flex-col gap-1 whitespace-normal rounded-2xl px-2 py-3 text-center">
+              <span className="trophy-badge-icon grid h-11 w-11 place-items-center rounded-full"><Icon className="!size-5" /></span>
+              <span className="text-[10px] font-semibold leading-tight">{name}</span>
+              <span className="text-[10px] text-muted-foreground">{price}</span>
             </Button>)}
           </div>
         </section>

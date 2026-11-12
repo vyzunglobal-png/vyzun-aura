@@ -33,3 +33,5 @@ export function invitePath(username: string) {
 export function inviteLink(origin: string, username: string) {
   return new URL(invitePath(username), origin).href;
 }
+
+export const INVITE_STORAGE_KEY = "vyzun.invite.ref";

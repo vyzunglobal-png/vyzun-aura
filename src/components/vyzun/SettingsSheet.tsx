@@ -44,7 +44,7 @@ import { useVyzunSession } from "@/hooks/use-vyzun-session";
 import { supabase } from "@/integrations/supabase/client";
 import { savePreferences } from "@/lib/vyzun-account.functions";
 import { cn } from "@/lib/utils";
-import { SUPPORT_EMAIL, supportMailto } from "@/lib/vyzun-links";
+import { SUPPORT_EMAIL, inviteLink, supportMailto } from "@/lib/vyzun-links";
 
 type Props = {
   open: boolean;
@@ -707,6 +707,20 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             title="Support & Legal"
             subtitle="Help, guidelines, policies, version"
           >
+            <Row
+              icon={<Sparkles className="h-4 w-4 text-magenta" />}
+              label="Invite friends to VYZUN"
+              hint={`vyzun.app/invite/${state.profile.username}`}
+              onClick={async () => {
+                const link = inviteLink(window.location.origin, state.profile.username);
+                try {
+                  if (navigator.share) await navigator.share({ title: "Join me on VYZUN", text: "Beat my Aura on VYZUN", url: link });
+                  else { await navigator.clipboard.writeText(link); setNotice("Invite link copied."); }
+                } catch (error) {
+                  if (!(error instanceof DOMException && error.name === "AbortError")) setNotice("Could not share. Try again.");
+                }
+              }}
+            />
             <Row
               icon={<HelpCircle className="h-4 w-4 text-cyan" />}
               label="Help & Support Center"

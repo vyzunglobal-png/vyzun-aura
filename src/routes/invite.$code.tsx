@@ -3,9 +3,7 @@ import { useEffect } from "react";
 import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/vyzun/Logo";
-import { normalizeInviteCode } from "@/lib/vyzun-links";
-
-export const INVITE_STORAGE_KEY = "vyzun.invite.ref";
+import { INVITE_STORAGE_KEY, normalizeInviteCode } from "@/lib/vyzun-links";
 
 export const Route = createFileRoute("/invite/$code")({
   head: ({ params }) => ({

@@ -14,6 +14,7 @@ import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReelsRouteImport } from './routes/reels'
 import { Route as AskUsernameRouteImport } from './routes/ask.$username'
+import { Route as InviteCodeRouteImport } from './routes/invite.$code'
 import { Route as SecretsIndexRouteImport } from './routes/secrets.index'
 import { Route as SecretsChatRouteImport } from './routes/secrets.chat'
 
@@ -42,6 +43,11 @@ const AskUsernameRoute = AskUsernameRouteImport.update({
   path: '/ask/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InviteCodeRoute = InviteCodeRouteImport.update({
+  id: '/invite/$code',
+  path: '/invite/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecretsIndexRoute = SecretsIndexRouteImport.update({
   id: '/secrets/',
   path: '/secrets/',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/reels': typeof ReelsRoute
   '/ask/$username': typeof AskUsernameRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/secrets/chat': typeof SecretsChatRoute
   '/secrets/': typeof SecretsIndexRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/reels': typeof ReelsRoute
   '/ask/$username': typeof AskUsernameRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/secrets/chat': typeof SecretsChatRoute
   '/secrets': typeof SecretsIndexRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/reels': typeof ReelsRoute
   '/ask/$username': typeof AskUsernameRoute
+  '/invite/$code': typeof InviteCodeRoute
   '/secrets/chat': typeof SecretsChatRoute
   '/secrets/': typeof SecretsIndexRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reels'
     | '/ask/$username'
+    | '/invite/$code'
     | '/secrets/chat'
     | '/secrets/'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reels'
     | '/ask/$username'
+    | '/invite/$code'
     | '/secrets/chat'
     | '/secrets'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reels'
     | '/ask/$username'
+    | '/invite/$code'
     | '/secrets/chat'
     | '/secrets/'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ReelsRoute: typeof ReelsRoute
   AskUsernameRoute: typeof AskUsernameRoute
+  InviteCodeRoute: typeof InviteCodeRoute
   SecretsChatRoute: typeof SecretsChatRoute
   SecretsIndexRoute: typeof SecretsIndexRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AskUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invite/$code': {
+      id: '/invite/$code'
+      path: '/invite/$code'
+      fullPath: '/invite/$code'
+      preLoaderRoute: typeof InviteCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/secrets/': {
       id: '/secrets/'
       path: '/secrets'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ReelsRoute: ReelsRoute,
   AskUsernameRoute: AskUsernameRoute,
+  InviteCodeRoute: InviteCodeRoute,
   SecretsChatRoute: SecretsChatRoute,
   SecretsIndexRoute: SecretsIndexRoute,
 }
