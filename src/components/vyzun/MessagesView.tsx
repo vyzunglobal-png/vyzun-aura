@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, BadgeCheck, MessageCircle, Phone, Search, Send, Video } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Crown, MapPin, MessageCircle, Phone, ScanFace, Search, Send, Video } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +16,7 @@ import { PaidActionSheet, type PaidAction } from "./PaidActionSheet";
 const TASKS = [{ key: "hooks", label: "Video hooks" }, { key: "scripts", label: "Scripts" }, { key: "bio", label: "Bio" }, { key: "safety", label: "Brand safety" }] as const;
 type Task = typeof TASKS[number]["key"];
 
-const ICEBREAKERS = ["How do I reveal a crush?", "What is Aura Score?", "How to pin on Campus Map?", "What is Vibe Clash?"] as const;
+const ICEBREAKERS = ["How to reveal crush?", "What is Aura Score?", "How to pin on Campus Map?"] as const;
 
 type ChatRow = { id: string; kind: string; last_message_at: string | null };
 type PeopleMap = Record<string, { username: string; avatar_url: string | null }>;
@@ -140,7 +140,7 @@ export function MessagesView() {
     </> : <>
       <div className="flex items-center justify-between gap-3"><Button variant="ghost" size="sm" onClick={() => { setActive(null); setNotice(null); }}><ArrowLeft className="h-4 w-4" />All chats</Button><h2 className="text-sm font-semibold">{active === "ai" ? "VYZUN AI" : "Private chat"}</h2>{active !== "ai" && <div className="flex gap-1"><Button variant="outline" size="icon" aria-label="Audio call" onClick={() => setNotice("Calling is not connected yet. No call was placed.")}><Phone className="h-4 w-4" /></Button><Button variant="outline" size="icon" aria-label="Video call" onClick={() => setNotice("Video calling is not connected yet. No call was placed.")}><Video className="h-4 w-4" /></Button></div>}</div>
       {active === "ai" ? <>
-        <div className="chat-ambience rounded-lg border border-magenta/30 p-4"><p className="text-sm leading-relaxed">Hey, I’m VYZUN AI ✨ What’s your next vibe? Let’s create something that feels like you.</p><div className="mt-3 flex flex-wrap gap-2">{["Give me a fun icebreaker", "Write a viral Reel hook", "Help me refresh my bio"].map(prompt => <Button key={prompt} size="sm" variant="outline" className="h-auto whitespace-normal text-left text-xs" onClick={() => setDraft(prompt)}>{prompt}</Button>)}</div><div className="mt-3 flex gap-2"><Button asChild size="sm" variant="outline"><Link to="/">Scan Face Now</Link></Button><Button asChild size="sm" variant="outline"><Link to="/secrets" search={{}}>Open Secrets</Link></Button></div></div>
+        <div className="chat-ambience rounded-lg border border-magenta/30 p-4"><p className="text-sm leading-relaxed">Hey, I’m VYZUN AI ✨ What’s your next vibe? Let’s create something that feels like you.</p><div className="mt-3 flex flex-wrap gap-2">{["Give me a fun icebreaker", "Write a viral Reel hook", "Help me refresh my bio"].map(prompt => <Button key={prompt} size="sm" variant="outline" className="h-auto whitespace-normal text-left text-xs" onClick={() => setDraft(prompt)}>{prompt}</Button>)}</div><div className="mt-3 flex flex-wrap gap-2" aria-label="Quick actions"><Button asChild size="sm" variant="aiCta"><Link to="/secrets" search={{ tab: "map" }}><MapPin />Open Campus Map</Link></Button><Button asChild size="sm" variant="aiCta"><Link to="/"><ScanFace />Scan Face Now</Link></Button><Button size="sm" variant="aiCtaPremium" onClick={() => setPaid({ title: "VIP Halo", price: "$4.99/mo", description: "A glowing VIP Halo on your Campus Map pin and profile. It appears only after a verified payment." })}><Crown />Buy VIP Halo</Button></div></div>
         <div className="flex flex-wrap gap-2" role="group" aria-label="AI task">{TASKS.map(t => <Button key={t.key} size="sm" variant={task === t.key ? "default" : "outline"} onClick={() => setTask(t.key)}>{t.label}</Button>)}</div>
         <div className="min-h-40 space-y-4" aria-live="polite">{answers.map((answer, i) => <div key={i} className="space-y-2"><p className="ml-auto max-w-[90%] rounded-xl bg-primary px-4 py-3 text-sm text-primary-foreground">{answer.prompt}</p><p className="whitespace-pre-wrap rounded-xl border border-glass-border px-4 py-3 text-sm leading-relaxed">{answer.text}</p></div>)}{busy && <p role="status" className="animate-pulse text-sm text-cyan">VYZUN AI is thinking…</p>}</div>
         <form onSubmit={e => { e.preventDefault(); void send(); }} className="flex items-end gap-2"><textarea value={draft} onChange={e => setDraft(e.target.value)} maxLength={2000} rows={2} aria-label="Message VYZUN AI" placeholder="What are you creating?" className="min-w-0 flex-1 resize-none rounded-xl border border-glass-border bg-background px-3 py-2 text-sm" /><Button type="submit" aria-label="Send to VYZUN AI" disabled={busy || !draft.trim()} className="bg-gradient-secret h-11 w-11 shrink-0 p-0"><Send className="h-4 w-4" /></Button></form>

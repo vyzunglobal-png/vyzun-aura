@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/vyzun/AppHeader";
 import { AuraCardModal } from "@/components/vyzun/AuraCardModal";
 import { DailyAuraBanner } from "@/components/vyzun/DailyAuraBanner";
 import { CrushMatcher } from "@/components/vyzun/CrushMatcher";
+import { QrScannerModal } from "@/components/vyzun/QrScannerModal";
 import { useVyzun, type AuraCard } from "@/lib/vyzun-store";
 import { cn } from "@/lib/utils";
 import { getLiveVibe } from "@/lib/aura-daily";
@@ -107,6 +108,7 @@ function ScanPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [resultOpen, setResultOpen] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const mountedRef = useRef(true);
   const scanTimerRef = useRef<number | null>(null);
   useEffect(() => {
@@ -193,7 +195,8 @@ function ScanPage() {
 
   return (
     <div className="pb-28">
-      <AppHeader />
+      <AppHeader onQr={() => setQrOpen(true)} />
+      <QrScannerModal open={qrOpen} onClose={() => setQrOpen(false)} />
 
       <main className="mx-auto max-w-lg px-5">
         <h1 className="sr-only">VYZUN AI Scanner</h1>
