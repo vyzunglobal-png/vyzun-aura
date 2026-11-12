@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImagePlus, MessageCircle, X } from "lucide-react";
 import { REACTIONS, useVyzun, type ReactionKey } from "@/lib/vyzun-store";
 import { cn } from "@/lib/utils";
