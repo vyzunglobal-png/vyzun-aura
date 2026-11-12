@@ -44,6 +44,7 @@ import { useVyzunSession } from "@/hooks/use-vyzun-session";
 import { supabase } from "@/integrations/supabase/client";
 import { savePreferences } from "@/lib/vyzun-account.functions";
 import { cn } from "@/lib/utils";
+import { SUPPORT_EMAIL, supportMailto } from "@/lib/vyzun-links";
 
 type Props = {
   open: boolean;
@@ -288,6 +289,31 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             {notice}
           </p>
         )}
+
+        <div className="mt-4 space-y-2" aria-label="Premium and creator tools">
+          <button
+            onClick={() => { onClose(); onOpenPrime?.(); }}
+            className="settings-banner settings-banner-platinum flex w-full items-center gap-3 rounded-2xl p-3 text-left tap active:tap-active"
+          >
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-gold"><Crown className="h-5 w-5 text-background" /></span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-semibold">VYZUN Platinum Pass</span>
+              <span className="block text-[11px] text-muted-foreground">$19.99 – $49.99/mo · VIP Halo, boosts, priority reveals</span>
+            </span>
+            <span aria-hidden className="text-gold">›</span>
+          </button>
+          <button
+            onClick={() => { onClose(); onOpenCreator?.(); }}
+            className="settings-banner settings-banner-creator flex w-full items-center gap-3 rounded-2xl p-3 text-left tap active:tap-active"
+          >
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-vyzun"><Wallet2 className="h-5 w-5 text-primary-foreground" /></span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-semibold">Creator Dashboard</span>
+              <span className="block text-[11px] text-muted-foreground">Missions · earnings · analytics</span>
+            </span>
+            <span aria-hidden className="text-cyan">›</span>
+          </button>
+        </div>
 
         <div className="mt-4 space-y-3">
           {/* A. Account & Profile */}
@@ -684,7 +710,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             <Row
               icon={<HelpCircle className="h-4 w-4 text-cyan" />}
               label="Help & Support Center"
-              onClick={() => setNotice("Support requests are routed to the VYZUN safety team.")}
+              hint={SUPPORT_EMAIL}
+              onClick={() => { window.location.href = supportMailto("VYZUN Help"); }}
             />
             <Row
               icon={<FileText className="h-4 w-4 text-violet" />}
@@ -699,7 +726,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             <Row
               icon={<FileText className="h-4 w-4 text-magenta" />}
               label="Terms of Service & Privacy Policy"
-              onClick={() => setNotice("Terms and privacy documents publish with the live app.")}
+              hint={`Privacy questions: ${SUPPORT_EMAIL}`}
+              onClick={() => { window.location.href = supportMailto("VYZUN Privacy Policy"); }}
             />
             <Row
               icon={<Info className="h-4 w-4 text-muted-foreground" />}
@@ -741,6 +769,9 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             </button>
             <p className="pt-1 text-center text-[11px] text-muted-foreground">
               Guest data stays on this device and syncs after you sign in.
+            </p>
+            <p className="text-center text-[11px] text-muted-foreground">
+              Help, safety & privacy: <a href={supportMailto("VYZUN Support")} className="font-semibold text-cyan underline-offset-2 hover:underline">{SUPPORT_EMAIL}</a>
             </p>
           </div>
         </div>
