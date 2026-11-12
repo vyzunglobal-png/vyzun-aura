@@ -1123,6 +1123,7 @@ export type Database = {
           audio_label: string | null
           caption: string
           category: string
+          cover_path: string | null
           created_at: string
           creator_id: string
           duration_seconds: number | null
@@ -1131,16 +1132,20 @@ export type Database = {
           is_published: boolean
           is_sponsored: boolean
           moderation_state: string
+          tagged_usernames: string[]
           thumbnail_url: string | null
           updated_at: string
+          video_path: string | null
           video_url: string | null
           views_count: number
+          visibility: string
           watch_seconds: number
         }
         Insert: {
           audio_label?: string | null
           caption?: string
           category?: string
+          cover_path?: string | null
           created_at?: string
           creator_id: string
           duration_seconds?: number | null
@@ -1149,16 +1154,20 @@ export type Database = {
           is_published?: boolean
           is_sponsored?: boolean
           moderation_state?: string
+          tagged_usernames?: string[]
           thumbnail_url?: string | null
           updated_at?: string
+          video_path?: string | null
           video_url?: string | null
           views_count?: number
+          visibility?: string
           watch_seconds?: number
         }
         Update: {
           audio_label?: string | null
           caption?: string
           category?: string
+          cover_path?: string | null
           created_at?: string
           creator_id?: string
           duration_seconds?: number | null
@@ -1167,10 +1176,13 @@ export type Database = {
           is_published?: boolean
           is_sponsored?: boolean
           moderation_state?: string
+          tagged_usernames?: string[]
           thumbnail_url?: string | null
           updated_at?: string
+          video_path?: string | null
           video_url?: string | null
           views_count?: number
+          visibility?: string
           watch_seconds?: number
         }
         Relationships: []

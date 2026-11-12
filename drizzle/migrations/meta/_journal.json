@@ -36,6 +36,13 @@
       "when": 1794485825257,
       "tag": "0004_public_feed_read_without_staff_check",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794486184336,
+      "tag": "0005_reel_publishing_privacy_and_review",
+      "breakpoints": true
     }
   ]
 }
