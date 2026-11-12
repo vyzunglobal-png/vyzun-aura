@@ -60,3 +60,15 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Living Aura: finish daily 3D card, banner, story preview and verify on phone width.
 - [ ] Reels redesign to match the uploaded reference: dark + light themes, top bar, 9:16 snap feed, double-tap heart, tap play/pause, right sidebar, info panel with audio ticker, glass bottom nav; export ReelsView.
 - [ ] Reel Creator Studio: flip/flash, 15/30/60s multi-segment recorder with pause/undo, music picker with trim, filters, text/stickers, gallery import, publish screen (cover, caption, hashtags, tags, privacy). Publishing stays private until storage + moderation are live.
+
+## Nov 12 restore + production directive
+- [x] Restore full repo into this project (code, db, drizzle, supabase, public), new Lovable Cloud, all 4 migrations, Google sign-in; build OK, 21 tests pass.
+- [ ] Records + users from the old backend: waiting on CSV/JSON exports from the user.
+- [ ] Dual theme: Reels screen and studio follow Light mode too.
+- [ ] Reels: double-tap neon heart burst, tap play/pause, expandable caption, audio marquee, Vibe/Fire + Battle icons.
+- [ ] Reel Creator Studio: flip/flash, 15/30/60s segmented recorder with pause/undo, music picker + trim, filter presets (Cyber Neon, Aesthetic Glow, Vintage, B&W, Smooth Skin), text + stickers drag/scale, gallery import, publish screen (cover, caption, hashtag suggestions, tags, Public / Secret Drop / Friends Only).
+- [ ] VYZUN AI: exactly 3 onboarding chips + CTA buttons [Open Campus Map] [Scan Face Now] [Buy VIP Halo].
+- [ ] Scan: QR modal with live camera + "Show My QR Code" toggle.
+- [ ] Profile: Platinum Pass + Creator Dashboard banners move into Settings drawer; horizontal Trophy Cabinet row.
+- [ ] Aura Card: verify chamfered 3D holographic card spec (ring, crown, 4 gauges, 4 orbs, quote, SHARE/SAVE).
+- [ ] Invite deep links (/invite/$code) and support email vyzun.global@gmail.com in Settings, Help, Privacy.
