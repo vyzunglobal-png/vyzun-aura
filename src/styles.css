@@ -708,3 +708,23 @@
 .nav-underline { height: 3px; border-radius: 9999px; background: var(--rv-line); box-shadow: 0 0 8px var(--rv-magenta); }
 
 @media (prefers-reduced-motion: reduce) { .rv-beams, .rv-marquee, .rv-eq span { animation: none; } }
+
+/* Settings drawer premium banners */
+.settings-banner { border: 1px solid transparent; transition: filter 160ms ease, transform 160ms ease; }
+.settings-banner:hover { filter: brightness(1.08); }
+.settings-banner-platinum {
+  background: linear-gradient(color-mix(in oklab, var(--card) 92%, var(--vz-gold)), color-mix(in oklab, var(--card) 92%, var(--vz-gold))) padding-box,
+    linear-gradient(120deg, var(--vz-gold), var(--vz-magenta)) border-box;
+  box-shadow: 0 0 22px -10px var(--vz-gold);
+}
+.settings-banner-creator {
+  background: linear-gradient(color-mix(in oklab, var(--card) 92%, var(--vz-cyan)), color-mix(in oklab, var(--card) 92%, var(--vz-cyan))) padding-box,
+    var(--gradient-vyzun) border-box;
+  box-shadow: 0 0 22px -10px var(--vz-cyan);
+}
+
+/* Profile trophy cabinet — horizontal badge row */
+.trophy-row { scrollbar-width: none; }
+.trophy-row::-webkit-scrollbar { display: none; }
+.trophy-badge { border-color: var(--glass-border); background: var(--glass); }
+.trophy-badge-icon { background-image: var(--gradient-vyzun); color: var(--primary-foreground); box-shadow: var(--glow-cyan); }
