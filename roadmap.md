@@ -73,3 +73,4 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Aura Card: verify chamfered 3D holographic card spec (ring, crown, 4 gauges, 4 orbs, quote, SHARE/SAVE).
 - [ ] Invite deep links (/invite/$code) and support email vyzun.global@gmail.com in Settings, Help, Privacy.
 - [ ] User (12:24): Platinum Pass + Creator Dashboard must be out of the Profile page (moved into Settings ⚙️); user says not everything matches the old app — confirm which screens differ.
+- [ ] Profile: show Platinum Pass and Creator Dashboard banners directly on Profile page (not inside Settings).
