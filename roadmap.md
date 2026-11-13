@@ -68,8 +68,9 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Reels: double-tap neon heart burst, tap play/pause, expandable caption, audio marquee, Vibe/Fire + Battle icons.
 - [ ] Reel Creator Studio: flip/flash, 15/30/60s segmented recorder with pause/undo, music picker + trim, filter presets (Cyber Neon, Aesthetic Glow, Vintage, B&W, Smooth Skin), text + stickers drag/scale, gallery import, publish screen (cover, caption, hashtag suggestions, tags, Public / Secret Drop / Friends Only).
 - [ ] VYZUN AI: exactly 3 onboarding chips + CTA buttons [Open Campus Map] [Scan Face Now] [Buy VIP Halo].
-- [ ] Scan: QR modal with live camera + "Show My QR Code" toggle.
+- [x] Scan: QR scanner removed from the first page at user request.
 - [ ] Profile: Platinum Pass + Creator Dashboard banners move into Settings drawer; horizontal Trophy Cabinet row.
 - [ ] Aura Card: verify chamfered 3D holographic card spec (ring, crown, 4 gauges, 4 orbs, quote, SHARE/SAVE).
 - [ ] Invite deep links (/invite/$code) and support email vyzun.global@gmail.com in Settings, Help, Privacy.
 - [ ] User (12:24): Platinum Pass + Creator Dashboard must be out of the Profile page (moved into Settings ⚙️); user says not everything matches the old app — confirm which screens differ.
+- [x] Profile: Platinum Pass and Creator Dashboard banners shown directly on Profile page (not inside Settings).
