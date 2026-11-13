@@ -60,7 +60,7 @@ export async function renderReel(opts: {
   const recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4_000_000 });
   const chunks: Blob[] = [];
   recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
-  const done = new Promise<Blob>(resolve => { recorder.onstop = () => resolve(new Blob(chunks, { type: mime.split(";")[0] })); });
+  const done = new Promise<Blob>(resolve => { recorder.onstop = () => resolve(new Blob(chunks, { type: mime.split(";")[0] ?? "video/webm" })); });
 
   const total = segments.reduce((s, x) => s + x.duration, 0);
   let musicEl: HTMLAudioElement | null = null;
