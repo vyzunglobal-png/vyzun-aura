@@ -290,31 +290,6 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           </p>
         )}
 
-        <div className="mt-4 space-y-2" aria-label="Premium and creator tools">
-          <button
-            onClick={() => { onClose(); onOpenPrime?.(); }}
-            className="settings-banner settings-banner-platinum flex w-full items-center gap-3 rounded-2xl p-3 text-left tap active:tap-active"
-          >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-gold"><Crown className="h-5 w-5 text-background" /></span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold">VYZUN Platinum Pass</span>
-              <span className="block text-[11px] text-muted-foreground">$19.99 – $49.99/mo · VIP Halo, boosts, priority reveals</span>
-            </span>
-            <span aria-hidden className="text-gold">›</span>
-          </button>
-          <button
-            onClick={() => { onClose(); onOpenCreator?.(); }}
-            className="settings-banner settings-banner-creator flex w-full items-center gap-3 rounded-2xl p-3 text-left tap active:tap-active"
-          >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-vyzun"><Wallet2 className="h-5 w-5 text-primary-foreground" /></span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold">Creator Dashboard</span>
-              <span className="block text-[11px] text-muted-foreground">Missions · earnings · analytics</span>
-            </span>
-            <span aria-hidden className="text-cyan">›</span>
-          </button>
-        </div>
-
         <div className="mt-4 space-y-3">
           {/* A. Account & Profile */}
           <Section
