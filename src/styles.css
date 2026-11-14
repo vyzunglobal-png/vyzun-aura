@@ -181,8 +181,7 @@
   transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 }
 .secret-link-copy {
-  background: linear-gradient(var(--glass), var(--glass)) padding-box, var(--gradient-secret) border-box;
-  background-color: var(--glass);
+  background: linear-gradient(color-mix(in oklab, var(--background) 88%, var(--vz-violet)), color-mix(in oklab, var(--background) 88%, var(--vz-violet))) padding-box, var(--gradient-secret) border-box;
   color: var(--foreground);
   border: 1.5px solid transparent;
   backdrop-filter: blur(14px);
