@@ -705,7 +705,7 @@
 /* Glass bottom navigation */
 .nav-glass { background: color-mix(in oklab, var(--background) 72%, transparent); backdrop-filter: blur(20px) saturate(160%); border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px -18px oklch(0.55 0.25 300 / 45%); }
 .nav-active-tile { border: 2px solid transparent; background: linear-gradient(var(--background), var(--background)) padding-box, var(--rv-ring) border-box; box-shadow: 0 0 16px -2px color-mix(in oklab, var(--rv-magenta) 70%, transparent), 0 0 18px -6px var(--rv-cyan); }
-.nav-underline { height: 3px; border-radius: 9999px; background: var(--rv-line); box-shadow: 0 0 8px var(--rv-magenta); }
+.nav-underline { height: 3px; border-radius: 9999px; background: linear-gradient(90deg, var(--vz-gold), var(--rv-cyan) 30%, var(--rv-magenta) 70%, var(--vz-gold)); box-shadow: 0 0 10px color-mix(in oklab, var(--vz-gold) 80%, transparent), 0 0 6px var(--rv-magenta); }
 
 @media (prefers-reduced-motion: reduce) { .rv-beams, .rv-marquee, .rv-eq span { animation: none; } }
 
