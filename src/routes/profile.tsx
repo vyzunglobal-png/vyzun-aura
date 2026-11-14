@@ -163,14 +163,20 @@ function ProfilePage() {
       <main className="mx-auto mt-6 max-w-lg px-5">
         <section className="mb-5 border-y border-glass-border py-3">
           <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Crown className="h-5 w-5 text-gold" />Luxury Trophy Cabinet</h2>
-          <div className="trophy-row mt-3 flex snap-x gap-2.5 overflow-x-auto pb-1" role="list" aria-label="Trophy badges">
-            {[{ name: "Virtual Crown", price: "$49", icon: Crown }, { name: "Private Jet", price: "$199", icon: Plane }, { name: "Diamond Aura", price: "$499", icon: Gem }].map(({ name, price, icon: Icon }) => <Button key={name} role="listitem" variant="outline"
-              onClick={() => setPaid({ title: name, price, description: `Send a ${name} digital gift to an eligible creator. No physical item. Gifts appear only after verified payment.` })}
-              className="trophy-badge h-auto w-[5.5rem] shrink-0 snap-start flex-col gap-1 whitespace-normal rounded-2xl px-2 py-3 text-center">
-              <span className="trophy-badge-icon grid h-11 w-11 place-items-center rounded-full"><Icon className="!size-5" /></span>
-              <span className="text-[10px] font-semibold leading-tight">{name}</span>
-              <span className="text-[10px] text-muted-foreground">{price}</span>
-            </Button>)}
+          <div className="mt-3 grid grid-cols-3 gap-2.5" role="list" aria-label="Trophy badges">
+            {[{ name: "Virtual Crown", price: "$49", icon: Crown }, { name: "Private Jet", price: "$199", icon: Plane }, { name: "Diamond Aura", price: "$499", icon: Gem }].map(({ name, price, icon: Icon }) => (
+              <button
+                key={name}
+                type="button"
+                role="listitem"
+                aria-label={`${name} · ${price}`}
+                onClick={() => setPaid({ title: name, price, description: `Send a ${name} digital gift to an eligible creator. No physical item. Gifts appear only after verified payment.` })}
+                className="trophy-tile flex h-20 min-w-0 flex-col items-center justify-center gap-2 rounded-2xl px-1.5 text-center tap active:tap-active"
+              >
+                <Icon className="h-7 w-7" strokeWidth={2} />
+                <span className="w-full truncate text-xs font-medium">{name}</span>
+              </button>
+            ))}
           </div>
         </section>
         <div className="flex gap-2">

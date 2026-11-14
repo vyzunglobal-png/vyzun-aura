@@ -779,3 +779,13 @@
 .studio-btn-primary { border: none; color: var(--studio-white); background: linear-gradient(100deg, var(--rv-blue), var(--rv-violet) 55%, var(--rv-magenta)); box-shadow: 0 0 18px -4px color-mix(in oklab, var(--rv-magenta) 75%, transparent); }
 .studio-btn-primary:hover { filter: brightness(1.1); }
 .rv-create { color: var(--studio-white); background: linear-gradient(140deg, var(--rv-violet), var(--rv-magenta)) padding-box, var(--rv-ring) border-box; }
+
+/* Luxury trophy tiles (Profile) */
+.trophy-tile {
+  background-image: linear-gradient(135deg, var(--vz-cyan) 0%, var(--vz-violet) 55%, var(--vz-magenta) 100%);
+  color: var(--primary-foreground);
+  box-shadow: 0 8px 24px -12px var(--vz-magenta), inset 0 1px 0 color-mix(in oklab, var(--primary-foreground) 35%, transparent);
+  transition: transform 160ms ease, filter 160ms ease;
+}
+.trophy-tile:hover { filter: brightness(1.08); }
+.trophy-tile:focus-visible { outline: 2px solid var(--vz-cyan); outline-offset: 2px; }
