@@ -74,3 +74,10 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Invite deep links (/invite/$code) and support email vyzun.global@gmail.com in Settings, Help, Privacy.
 - [ ] User (12:24): Platinum Pass + Creator Dashboard must be out of the Profile page (moved into Settings ⚙️); user says not everything matches the old app — confirm which screens differ.
 - [x] Profile: Platinum Pass and Creator Dashboard banners shown directly on Profile page (not inside Settings).
+
+## Nov 15 request
+- [x] Revert the SCAN tab underline to its original look (user said the wrong line was changed).
+- [ ] Multiple languages that really translate the app UI; "VYZUN" and user content never translated; correct right-to-left for Arabic/Urdu.
+- [ ] Tier 1 country essentials (privacy, terms, account deletion, data export, age/consent, report/block) present and working.
+- [ ] Security hardening: run security scan, fix every finding.
+- [ ] Speed: smooth fast loading; check heavy screens.

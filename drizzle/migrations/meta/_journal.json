@@ -43,6 +43,13 @@
       "when": 1794486184336,
       "tag": "0005_reel_publishing_privacy_and_review",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794722181053,
+      "tag": "0006_harden_edit_rules",
+      "breakpoints": true
     }
   ]
 }
