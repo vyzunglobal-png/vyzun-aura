@@ -5,6 +5,8 @@
 export const APP_NAME = "VYZUN";
 
 const en = {
+  "profile.edit": "Edit Profile",
+  "banner.title": "Today’s 3D Aura Card",
   "nav.scan": "Scan",
   "nav.secrets": "Secrets",
   "nav.reels": "Reels",
@@ -98,6 +100,8 @@ export type I18nKey = keyof typeof en;
 type Dict = Record<I18nKey, string>;
 
 const hi: Dict = {
+  "profile.edit": "प्रोफ़ाइल एडिट करें",
+  "banner.title": "आज का 3D ऑरा कार्ड",
   "nav.scan": "स्कैन",
   "nav.secrets": "सीक्रेट्स",
   "nav.reels": "रील्स",
@@ -188,6 +192,8 @@ const hi: Dict = {
 };
 
 const es: Dict = {
+  "profile.edit": "Editar perfil",
+  "banner.title": "Tu Aura Card 3D de hoy",
   "nav.scan": "Escanear",
   "nav.secrets": "Secretos",
   "nav.reels": "Reels",
@@ -278,6 +284,8 @@ const es: Dict = {
 };
 
 const fr: Dict = {
+  "profile.edit": "Modifier le profil",
+  "banner.title": "Votre Aura Card 3D du jour",
   "nav.scan": "Scanner",
   "nav.secrets": "Secrets",
   "nav.reels": "Reels",
@@ -368,6 +376,8 @@ const fr: Dict = {
 };
 
 const de: Dict = {
+  "profile.edit": "Profil bearbeiten",
+  "banner.title": "Deine 3D Aura Card von heute",
   "nav.scan": "Scannen",
   "nav.secrets": "Secrets",
   "nav.reels": "Reels",
@@ -458,6 +468,8 @@ const de: Dict = {
 };
 
 const it: Dict = {
+  "profile.edit": "Modifica profilo",
+  "banner.title": "La tua Aura Card 3D di oggi",
   "nav.scan": "Scansiona",
   "nav.secrets": "Segreti",
   "nav.reels": "Reels",
@@ -548,6 +560,8 @@ const it: Dict = {
 };
 
 const pt: Dict = {
+  "profile.edit": "Editar perfil",
+  "banner.title": "Seu Aura Card 3D de hoje",
   "nav.scan": "Escanear",
   "nav.secrets": "Segredos",
   "nav.reels": "Reels",
@@ -638,6 +652,8 @@ const pt: Dict = {
 };
 
 const ar: Dict = {
+  "profile.edit": "تعديل الملف الشخصي",
+  "banner.title": "بطاقة الهالة ثلاثية الأبعاد لليوم",
   "nav.scan": "مسح",
   "nav.secrets": "الأسرار",
   "nav.reels": "ريلز",
@@ -728,6 +744,8 @@ const ar: Dict = {
 };
 
 const ja: Dict = {
+  "profile.edit": "プロフィールを編集",
+  "banner.title": "今日の3Dオーラカード",
   "nav.scan": "スキャン",
   "nav.secrets": "シークレット",
   "nav.reels": "リール",
@@ -818,6 +836,8 @@ const ja: Dict = {
 };
 
 const ko: Dict = {
+  "profile.edit": "프로필 편집",
+  "banner.title": "오늘의 3D 오라 카드",
   "nav.scan": "스캔",
   "nav.secrets": "시크릿",
   "nav.reels": "릴스",
@@ -908,6 +928,8 @@ const ko: Dict = {
 };
 
 const zh: Dict = {
+  "profile.edit": "编辑资料",
+  "banner.title": "今日 3D 光环卡",
   "nav.scan": "扫描",
   "nav.secrets": "秘密",
   "nav.reels": "短视频",
@@ -998,6 +1020,8 @@ const zh: Dict = {
 };
 
 const ru: Dict = {
+  "profile.edit": "Редактировать профиль",
+  "banner.title": "Ваша 3D Aura Card на сегодня",
   "nav.scan": "Скан",
   "nav.secrets": "Секреты",
   "nav.reels": "Reels",
@@ -1109,7 +1133,7 @@ export const DICTIONARIES: Record<LanguageCode, Dict> = { en, hi, es, fr, de, it
 export const RTL_LANGUAGES: readonly string[] = ["ar"];
 
 export function resolveLanguage(code: string | null | undefined): LanguageCode {
-  const base = (code ?? "en").toLowerCase().split("-")[0];
+  const base = (code ?? "en").toLowerCase().split("-")[0] ?? "en";
   return (base in DICTIONARIES ? base : "en") as LanguageCode;
 }
 

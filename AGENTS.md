@@ -44,3 +44,6 @@ use the editor.
 - Keep AI provider helpers server-only and invoke the authenticated companion function with explicit creative context; AI never receives private chat history implicitly.
 - Recover deployment-stale route chunks with one session-scoped document refresh per minute; repeated failures must remain visible and manually retryable rather than reload-looping.
 - Keep date-based Aura variation and streak arithmetic in pure browser-safe helpers so the UI can refresh at local midnight without fabricating activity data.
+- App UI text goes through `useT()`/`translate()` from `src/lib/i18n.ts`; every listed language must have every key (tested), brand names stay in Latin script and user content is never translated — keeps languages complete and the brand consistent.
+- Account deletion runs only through the authenticated `deleteMyAccount` server function, which deletes the caller's own auth user (app rows cascade) — clients can never delete other users.
+- Like totals are read through the `reel_like_counts` database function; reaction and follow rows are visible only to their owner — prevents exposing who liked or followed whom.

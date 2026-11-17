@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { isRtl, resolveLanguage, translate, type I18nKey } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ *
  * VYZUN local state (guest-first).
@@ -223,7 +224,7 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<VyzunState>(defaultState);
 
   useEffect(() => {
-    let next = { ...defaultState(), hydrated: true };
+    let next: VyzunState = { ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) };
     try {
       const raw = localStorage.getItem(KEY);
       if (raw) {
@@ -261,6 +262,13 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
     root.classList.toggle("theme-light", state.theme === "light-glass");
   }, [state.theme]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const language = resolveLanguage(state.language);
+    root.lang = language;
+    root.dir = isRtl(language) ? "rtl" : "ltr";
+  }, [state.language]);
+
   const update = useCallback<Ctx["update"]>((patch) => {
     setState((s) => ({ ...s, ...(typeof patch === "function" ? patch(s) : patch) }));
   }, []);
@@ -271,11 +279,17 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
     } catch {
       /* noop */
     }
-    setState({ ...defaultState(), hydrated: true });
+    setState({ ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) });
   }, []);
 
   const value = useMemo(() => ({ state, update, reset }), [state, update, reset]);
   return <VyzunContext.Provider value={value}>{children}</VyzunContext.Provider>;
+}
+
+/** Translator for the app's own UI text; never use it on user content. */
+export function useT() {
+  const { state } = useVyzun();
+  return useCallback((key: I18nKey) => translate(state.language, key), [state.language]);
 }
 
 export function useVyzun() {
@@ -284,27 +298,4 @@ export function useVyzun() {
   return ctx;
 }
 
-export const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "hi", label: "हिन्दी" },
-  { code: "bn", label: "বাংলা" },
-  { code: "ta", label: "தமிழ்" },
-  { code: "te", label: "తెలుగు" },
-  { code: "mr", label: "मराठी" },
-  { code: "es", label: "Español" },
-  { code: "pt", label: "Português" },
-  { code: "fr", label: "Français" },
-  { code: "de", label: "Deutsch" },
-  { code: "ar", label: "العربية" },
-  { code: "id", label: "Bahasa Indonesia" },
-  { code: "ja", label: "日本語" },
-  { code: "ko", label: "한국어" },
-  { code: "ru", label: "Русский" },
-  { code: "tr", label: "Türkçe" },
-  { code: "vi", label: "Tiếng Việt" },
-  { code: "zh", label: "中文" },
-  { code: "sw", label: "Kiswahili" },
-  { code: "fa", label: "فارسی" },
-];
-
-export const RTL_LANGUAGES = ["ar", "fa", "he", "ur"];
+export { LANGUAGES, RTL_LANGUAGES } from "@/lib/i18n";

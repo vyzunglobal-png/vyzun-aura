@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -154,8 +155,12 @@ function RootComponent() {
   );
 }
 
+const PUBLIC_LEGAL_PATHS = ["/privacy", "/terms"];
+
 function VyzunShell({ children }: { children: ReactNode }) {
   const { state } = useVyzun();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isLegal = PUBLIC_LEGAL_PATHS.includes(pathname);
   const [splashDone, setSplashDone] = useState(false);
   const onSplashDone = useCallback(() => setSplashDone(true), []);
 
@@ -169,6 +174,7 @@ function VyzunShell({ children }: { children: ReactNode }) {
     );
   }
 
+  if (isLegal) return <>{children}</>;
   if (!state.onboarded) return <Onboarding />;
 
   return (

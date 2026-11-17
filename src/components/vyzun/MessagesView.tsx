@@ -128,7 +128,7 @@ export function MessagesView() {
       <button onClick={() => openAI()} className="glass-card relative w-full p-4 text-left shadow-[var(--glow-neon)] tap active:tap-active">
         <span aria-hidden className="bg-gradient-secret absolute right-3 top-3 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider text-primary-foreground">PINNED ›</span>
         <div className="flex items-center gap-3">
-          <span className="squircle-glow grid h-14 w-14 shrink-0 place-items-center overflow-hidden bg-background p-2"><Logo className="h-full w-full" /></span>
+          <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full"><Logo className="h-full w-full rounded-full object-cover" /></span>
           <span className="min-w-0">
             <span className="flex items-center gap-2 font-semibold">✨ VYZUN AI <BadgeCheck className="h-4 w-4 text-cyan" /></span>
             <span className="block text-xs text-muted-foreground">Verified Vibe Guide · always pinned first</span>

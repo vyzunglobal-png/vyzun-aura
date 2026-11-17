@@ -156,3 +156,32 @@ export const getCreatorSummary = createServerFn({ method: "GET" })
       payouts: payouts ?? [],
     };
   });
+
+/**
+ * Permanently deletes the signed-in user's account. The caller is verified by
+ * requireSupabaseAuth and can only ever delete their own user id; uploaded reel
+ * media is removed first, then the auth user (all app rows cascade from it).
+ */
+export const deleteMyAccount = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const userId = context.userId;
+
+    const bucket = supabaseAdmin.storage.from("reel-media");
+    for (let page = 0; page < 50; page++) {
+      const { data: files, error } = await bucket.list(userId, { limit: 100 });
+      if (error || !files?.length) break;
+      const paths = files.filter((f) => f.name).map((f) => `${userId}/${f.name}`);
+      if (!paths.length) break;
+      const { error: removeError } = await bucket.remove(paths);
+      if (removeError) break;
+    }
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+    if (error) {
+      console.error("deleteMyAccount failed", error.message);
+      return { ok: false as const };
+    }
+    return { ok: true as const };
+  });

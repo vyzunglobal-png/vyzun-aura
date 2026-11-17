@@ -43,7 +43,7 @@ const TABS: { key: ReelCategory; label: string; flame?: boolean }[] = [
   { key: "Trending", label: "Trending" },
 ];
 
-/** Real like counts per reel from reel_reactions. */
+/** Real like counts per reel; only totals are exposed, never who liked. */
 function useReelLikeCounts(ids: string[]) {
   const key = ids.slice().sort().join(",");
   return useQuery({
@@ -51,10 +51,10 @@ function useReelLikeCounts(ids: string[]) {
     enabled: ids.length > 0,
     staleTime: 30_000,
     queryFn: async () => {
-      const { data, error } = await supabase.from("reel_reactions").select("reel_id").in("reel_id", ids);
+      const { data, error } = await supabase.rpc("reel_like_counts", { _reel_ids: ids });
       if (error) throw error;
       const counts: Record<string, number> = {};
-      for (const row of data ?? []) counts[row.reel_id] = (counts[row.reel_id] ?? 0) + 1;
+      for (const row of data ?? []) counts[row.reel_id] = Number(row.likes);
       return counts;
     },
   });

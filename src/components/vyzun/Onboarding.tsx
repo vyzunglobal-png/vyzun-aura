@@ -1,7 +1,8 @@
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Check, Globe, Moon, Search, Shield, Smartphone, Sun, User } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { LANGUAGES, useVyzun, type ThemeName } from "@/lib/vyzun-store";
+import { LANGUAGES, useT, useVyzun, type ThemeName } from "@/lib/vyzun-store";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { claimProfile } from "@/lib/vyzun-account.functions";
@@ -12,6 +13,7 @@ type Step = "theme" | "language" | "auth" | "profile";
 
 export function Onboarding() {
   const { state, update } = useVyzun();
+  const t = useT();
   const claim = useServerFn(claimProfile);
   const [step, setStep] = useState<Step>("theme");
   const [query, setQuery] = useState("");
@@ -120,15 +122,15 @@ export function Onboarding() {
         <Logo className="h-11 w-11" />
         <div>
           <Wordmark className="text-2xl" />
-          <p className="text-xs text-muted-foreground">Your Vibe. Your Identity. Your Opportunity.</p>
+          <p className="text-xs text-muted-foreground">{t("onboarding.tagline")}</p>
         </div>
       </header>
 
       <div className="mx-auto mt-10 max-w-md">
         {step === "theme" && (
           <section className="anim-rise">
-            <h1 className="text-2xl font-semibold">Choose your theme</h1>
-            <p className="mt-1 text-sm text-muted-foreground">You can change this anytime in Settings.</p>
+            <h1 className="text-2xl font-semibold">{t("onboarding.chooseTheme")}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{t("onboarding.changeLater")}</p>
             <div className="mt-6 grid gap-4">
               <button onClick={() => pickTheme("dark-neon")} className="glass-card tap active:tap-active p-5 text-left">
                 <Moon className="mb-3 h-6 w-6 text-cyan" />
@@ -146,14 +148,14 @@ export function Onboarding() {
 
         {step === "language" && (
           <section className="anim-rise">
-            <h1 className="text-2xl font-semibold">Choose your language</h1>
+            <h1 className="text-2xl font-semibold">{t("onboarding.chooseLanguage")}</h1>
             <div className="glass-card mt-4 flex items-center gap-2 px-4 py-3">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search languages"
-                aria-label="Search languages"
+                placeholder={t("settings.searchLanguages")}
+                aria-label={t("settings.searchLanguages")}
                 className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
@@ -189,7 +191,7 @@ export function Onboarding() {
 
         {step === "auth" && (
           <section className="anim-rise">
-            <h1 className="text-2xl font-semibold">Join VYZUN</h1>
+            <h1 className="text-2xl font-semibold">{t("onboarding.join")}</h1>
             <p className="mt-1 text-sm text-muted-foreground">
               Sign in later if you prefer — guest mode works fully on this device.
             </p>
@@ -201,8 +203,8 @@ export function Onboarding() {
               >
                 <Shield className="h-5 w-5 text-cyan" />
                 <span>
-                  <span className="block font-medium">Continue with Google</span>
-                  <span className="text-xs text-muted-foreground">Secure sign-in</span>
+                  <span className="block font-medium">{t("onboarding.google")}</span>
+                  <span className="text-xs text-muted-foreground">{t("onboarding.secure")}</span>
                 </span>
               </button>
 
@@ -273,13 +275,19 @@ export function Onboarding() {
                 Guest mode keeps your scans, Aura Cards and preferences on this device and syncs
                 supported data once you sign in.
               </p>
+              <p className="text-center text-[11px] text-muted-foreground">
+                {t("onboarding.agree")}{" "}
+                <Link to="/terms" className="font-semibold text-cyan underline-offset-2 hover:underline">{t("settings.terms")}</Link>
+                {" · "}
+                <Link to="/privacy" className="font-semibold text-cyan underline-offset-2 hover:underline">{t("settings.privacyPolicy")}</Link>
+              </p>
             </div>
           </section>
         )}
 
         {step === "profile" && (
           <section className="anim-rise">
-            <h1 className="text-2xl font-semibold">Pick your username</h1>
+            <h1 className="text-2xl font-semibold">{t("onboarding.pickUsername")}</h1>
             <div className="glass-card mt-4 flex items-center gap-2 px-4 py-3">
               <User className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">@</span>

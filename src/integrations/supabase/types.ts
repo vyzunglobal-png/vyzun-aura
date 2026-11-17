@@ -1684,6 +1684,13 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      reel_like_counts: {
+        Args: { _reel_ids: string[] }
+        Returns: {
+          likes: number
+          reel_id: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

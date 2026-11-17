@@ -36,13 +36,15 @@ import {
 import {
   APP_VERSION,
   LANGUAGES,
+  useT,
   useVyzun,
   type Audience,
   type VyzunSettings,
 } from "@/lib/vyzun-store";
 import { useVyzunSession } from "@/hooks/use-vyzun-session";
 import { supabase } from "@/integrations/supabase/client";
-import { savePreferences } from "@/lib/vyzun-account.functions";
+import { deleteMyAccount, savePreferences } from "@/lib/vyzun-account.functions";
+import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { SUPPORT_EMAIL, inviteLink, supportMailto } from "@/lib/vyzun-links";
 
@@ -216,9 +218,12 @@ function Field({
 
 export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Props) {
   const { state, update, reset } = useVyzun();
+  const t = useT();
   const { isAuthenticated, session } = useVyzunSession();
   const [query, setQuery] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const navigate = useNavigate();
   const [notice, setNotice] = useState<string | null>(null);
   const [draft, setDraft] = useState({
     displayName: state.profile.displayName,
@@ -274,12 +279,12 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
       <div className="glass-card max-h-[85vh] w-full overflow-y-auto overflow-x-hidden rounded-b-none p-4 pb-[calc(env(safe-area-inset-bottom)+1.25rem)]">
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
           <div className="min-w-0">
-            <h2 className="truncate font-display text-lg font-semibold">Settings</h2>
+            <h2 className="truncate font-display text-lg font-semibold">{t("settings.title")}</h2>
             <p className="truncate text-[11px] text-muted-foreground">
-              @{state.profile.username} · {isAuthenticated ? "Signed in" : "Guest on this device"}
+              @{state.profile.username} · {isAuthenticated ? t("settings.signedIn") : t("settings.guest")}
             </p>
           </div>
-          <button onClick={onClose} aria-label="Close settings" className="tap active:tap-active">
+          <button onClick={onClose} aria-label={t("settings.close")} className="tap active:tap-active">
             <X className="h-5 w-5" />
           </button>
         </header>
@@ -294,23 +299,23 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* A. Account & Profile */}
           <Section
             icon={<UserCog className="h-4 w-4 text-cyan" />}
-            title="Account & Profile"
-            subtitle="Name, handle, bio, verification, security"
+            title={t("settings.account")}
+            subtitle={t("settings.accountHint")}
             defaultOpen
           >
             <Field
-              label="Display name"
+              label={t("settings.displayName")}
               value={draft.displayName}
               onChange={(v) => setDraft((d) => ({ ...d, displayName: v }))}
             />
             <Field
-              label="Username"
+              label={t("settings.username")}
               prefix="@"
               value={draft.username}
               onChange={(v) => setDraft((d) => ({ ...d, username: v.toLowerCase() }))}
             />
             <Field
-              label="Bio"
+              label={t("settings.bio")}
               value={draft.bio}
               onChange={(v) => setDraft((d) => ({ ...d, bio: v }))}
               placeholder="Watch. Create. Vibe. Earn."
@@ -325,11 +330,11 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
                     bio: draft.bio,
                   },
                 }));
-                setNotice("Profile details saved.");
+                setNotice(t("settings.profileSaved"));
               }}
               className="w-full rounded-xl bg-gradient-vyzun py-2.5 text-sm font-semibold text-primary-foreground tap active:tap-active"
             >
-              Save profile details
+              {t("settings.saveProfile")}
             </button>
 
             <Row
@@ -387,8 +392,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* B. Prime & monetization */}
           <Section
             icon={<Crown className="h-4 w-4 text-magenta" />}
-            title="VYZUN Prime & Monetization"
-            subtitle="Plan, creator tools, payouts"
+            title={t("settings.prime")}
+            subtitle={t("settings.primeHint")}
           >
             <Row
               icon={<Crown className="h-4 w-4 text-magenta" />}
@@ -419,8 +424,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* C. Privacy & safety */}
           <Section
             icon={<ShieldCheck className="h-4 w-4 text-cyan" />}
-            title="Privacy & Safety"
-            subtitle="Secrets, chats, calls, blocked accounts"
+            title={t("settings.privacy")}
+            subtitle={t("settings.privacyHint")}
           >
             {audienceRow(
               "Anonymous Secrets",
@@ -479,7 +484,7 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             />
             <Row
               icon={<Download className="h-4 w-4 text-cyan" />}
-              label="Download my data"
+              label={t("settings.downloadData")}
               hint="Export what this device holds"
               onClick={() => {
                 try {
@@ -501,8 +506,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* D. Experience */}
           <Section
             icon={<Sparkles className="h-4 w-4 text-violet" />}
-            title="Experience & Personalization"
-            subtitle="Theme, language, media, sound"
+            title={t("settings.experience")}
+            subtitle={t("settings.experienceHint")}
           >
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -533,15 +538,15 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
 
             <div className="rounded-xl border border-glass-border p-3">
               <p className="flex items-center gap-2 text-sm">
-                <Languages className="h-4 w-4 text-cyan" /> Language & localization
+                <Languages className="h-4 w-4 text-cyan" /> {t("settings.language")}
               </p>
               <div className="mt-2 flex items-center gap-2 rounded-xl border border-glass-border px-3 py-2">
                 <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search languages"
-                  aria-label="Search languages"
+                  placeholder={t("settings.searchLanguages")}
+                  aria-label={t("settings.searchLanguages")}
                   className="w-full min-w-0 bg-transparent text-sm outline-none"
                 />
               </div>
@@ -563,7 +568,7 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
                   </button>
                 ))}
                 {langs.length === 0 && (
-                  <p className="py-2 text-center text-[11px] text-muted-foreground">No match.</p>
+                  <p className="py-2 text-center text-[11px] text-muted-foreground">{t("settings.noMatch")}</p>
                 )}
               </div>
             </div>
@@ -645,8 +650,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* E. Notifications */}
           <Section
             icon={<Bell className="h-4 w-4 text-cyan" />}
-            title="Notifications"
-            subtitle="Choose what reaches you"
+            title={t("settings.notifications")}
+            subtitle={t("settings.notificationsHint")}
           >
             {(
               [
@@ -679,8 +684,8 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
           {/* F. Support & legal */}
           <Section
             icon={<HelpCircle className="h-4 w-4 text-violet" />}
-            title="Support & Legal"
-            subtitle="Help, guidelines, policies, version"
+            title={t("settings.support")}
+            subtitle={t("settings.supportHint")}
           >
             <Row
               icon={<Sparkles className="h-4 w-4 text-magenta" />}
@@ -698,29 +703,34 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
             />
             <Row
               icon={<HelpCircle className="h-4 w-4 text-cyan" />}
-              label="Help & Support Center"
+              label={t("settings.help")}
               hint={SUPPORT_EMAIL}
               onClick={() => { window.location.href = supportMailto("VYZUN Help"); }}
             />
             <Row
               icon={<FileText className="h-4 w-4 text-violet" />}
-              label="Report a problem"
+              label={t("settings.report")}
               onClick={() => setNotice("Tell us what happened from the report control on any post, chat or profile.")}
             />
             <Row
               icon={<ShieldCheck className="h-4 w-4 text-cyan" />}
-              label="Community guidelines & safety"
+              label={t("settings.guidelines")}
               onClick={() => setNotice("VYZUN removes harassment, doxxing and non-original content.")}
             />
             <Row
               icon={<FileText className="h-4 w-4 text-magenta" />}
-              label="Terms of Service & Privacy Policy"
-              hint={`Privacy questions: ${SUPPORT_EMAIL}`}
-              onClick={() => { window.location.href = supportMailto("VYZUN Privacy Policy"); }}
+              label={t("settings.privacyPolicy")}
+              hint={SUPPORT_EMAIL}
+              onClick={() => { onClose(); void navigate({ to: "/privacy" }); }}
+            />
+            <Row
+              icon={<FileText className="h-4 w-4 text-violet" />}
+              label={t("settings.terms")}
+              onClick={() => { onClose(); void navigate({ to: "/terms" }); }}
             />
             <Row
               icon={<Info className="h-4 w-4 text-muted-foreground" />}
-              label="App version"
+              label={t("settings.version")}
               hint={`VYZUN ${APP_VERSION} · ${isAuthenticated ? "Cloud connected" : "Local device mode"}`}
             />
           </Section>
@@ -739,7 +749,7 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
                 !isAuthenticated && "opacity-50",
               )}
             >
-              <LogOut className="h-4 w-4" /> {isAuthenticated ? "Log out" : "Not signed in"}
+              <LogOut className="h-4 w-4" /> {isAuthenticated ? t("settings.logout") : t("settings.notSignedIn")}
             </button>
             <button
               onClick={() => {
@@ -748,13 +758,13 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
               }}
               className="w-full rounded-xl border border-glass-border py-2.5 text-sm tap active:tap-active"
             >
-              Reset this device & restart onboarding
+              {t("settings.reset")}
             </button>
             <button
               onClick={() => setConfirmDelete(true)}
               className="flex w-full items-center justify-center gap-2 rounded-xl border border-destructive/60 py-2.5 text-sm text-destructive tap active:tap-active"
             >
-              <Trash2 className="h-4 w-4" /> Delete account permanently
+              <Trash2 className="h-4 w-4" /> {t("settings.delete")}
             </button>
             <p className="pt-1 text-center text-[11px] text-muted-foreground">
               Guest data stays on this device and syncs after you sign in.
@@ -769,30 +779,43 @@ export function SettingsSheet({ open, onClose, onOpenPrime, onOpenCreator }: Pro
       {confirmDelete && (
         <div className="fixed inset-0 z-[60] grid place-items-center bg-background/80 p-5 backdrop-blur-sm">
           <div className="glass-card w-full max-w-sm p-5">
-            <h3 className="font-display text-base font-semibold">Delete your account?</h3>
+            <h3 className="font-display text-base font-semibold">{t("settings.deleteTitle")}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              This permanently removes your profile, Reels, Aura Cards, secrets and Vibers. It cannot be
-              undone.
+              {t("settings.deleteBody")}
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button
                 onClick={() => setConfirmDelete(false)}
                 className="rounded-xl border border-glass-border py-2.5 text-sm tap active:tap-active"
               >
-                Keep account
+                {t("settings.keep")}
               </button>
               <button
-                onClick={() => {
-                  setConfirmDelete(false);
-                  setNotice(
-                    isAuthenticated
-                      ? "Deletion request recorded — your account is removed after the safety review window."
-                      : "You're a guest, so use Reset this device to erase everything stored here.",
-                  );
+                disabled={deleting}
+                onClick={async () => {
+                  if (!isAuthenticated) {
+                    setConfirmDelete(false);
+                    setNotice(t("settings.guestDelete"));
+                    return;
+                  }
+                  setDeleting(true);
+                  try {
+                    const res = await deleteMyAccount();
+                    if (!res.ok) throw new Error("delete_failed");
+                    await supabase.auth.signOut().catch(() => undefined);
+                    reset();
+                    setConfirmDelete(false);
+                    onClose();
+                  } catch {
+                    setNotice(t("settings.deleteFailed"));
+                    setConfirmDelete(false);
+                  } finally {
+                    setDeleting(false);
+                  }
                 }}
-                className="rounded-xl bg-destructive py-2.5 text-sm font-semibold text-destructive-foreground tap active:tap-active"
+                className="rounded-xl bg-destructive py-2.5 text-sm font-semibold text-destructive-foreground tap active:tap-active disabled:opacity-60"
               >
-                Delete
+                {deleting ? t("settings.deleting") : t("settings.deleteConfirm")}
               </button>
             </div>
           </div>
