@@ -6,7 +6,7 @@ export const APP_NAME = "VYZUN";
 
 const en = {
   "profile.edit": "Edit Profile",
-  "banner.title": "Today"s 3D Aura Card",
+  "banner.title": "Today’s 3D Aura Card",
   "nav.scan": "Scan",
   "nav.secrets": "Secrets",
   "nav.reels": "Reels",
