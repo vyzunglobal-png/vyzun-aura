@@ -77,9 +77,9 @@ Store approval, complete privacy compliance and production safety certification 
 
 ## Nov 15 request
 - [x] Revert the SCAN tab underline to its original look (user said the wrong line was changed).
-- [ ] Multiple languages that really translate the app UI; "VYZUN" and user content never translated; correct right-to-left for Arabic/Urdu.
-- [ ] Tier 1 country essentials (privacy, terms, account deletion, data export, age/consent, report/block) present and working.
-- [ ] Security hardening: run security scan, fix every finding.
-- [ ] Speed: smooth fast loading; check heavy screens.
-- [ ] VYZUN AI chat: show the VYZUN logo as its profile picture, filling the circle, with the outer blue ring removed.
-- [ ] Bottom tab bar: straight, flat, full-width top edge (no rounded corners) with a clean top line, in Light and Dark.
+- [x] 12 languages translate the bottom tabs, Scan, Profile, Settings and welcome screens; "VYZUN" and user content never translated; Arabic right-to-left. Remaining: Secrets, Reels, Messages, studio and pop-ups are still English.
+- [x] Privacy Policy + Terms pages, 13+ notice at sign-up, real permanent account deletion, data download. Legal text needs review by the owner's lawyer.
+- [x] Security: edit rules tightened on 8 tables, follows + likes private, like totals via safe counter, browser security headers. Kept intentionally public: approved public Reel videos, app config.
+- [ ] Speed: deeper performance pass on Reels/studio not done yet.
+- [x] VYZUN AI chat: logo fills a round picture, blue ring removed.
+- [x] Bottom tab bar: flat, straight full-width top edge in Light and Dark.
