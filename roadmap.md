@@ -81,3 +81,4 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Tier 1 country essentials (privacy, terms, account deletion, data export, age/consent, report/block) present and working.
 - [ ] Security hardening: run security scan, fix every finding.
 - [ ] Speed: smooth fast loading; check heavy screens.
+- [ ] VYZUN AI chat: show the VYZUN logo as its profile picture, filling the circle, with the outer blue ring removed.
