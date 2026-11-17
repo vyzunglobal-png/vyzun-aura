@@ -6,7 +6,7 @@ import { AppHeader } from "@/components/vyzun/AppHeader";
 import { AuraCardModal } from "@/components/vyzun/AuraCardModal";
 import { DailyAuraBanner } from "@/components/vyzun/DailyAuraBanner";
 import { CrushMatcher } from "@/components/vyzun/CrushMatcher";
-import { useVyzun, type AuraCard } from "@/lib/vyzun-store";
+import { useT, useVyzun, type AuraCard } from "@/lib/vyzun-store";
 import { cn } from "@/lib/utils";
 import { getLiveVibe } from "@/lib/aura-daily";
 import { analyzePortraitPalette, DEFAULT_PALETTE, type AuraColor } from "@/lib/aura-palette";
@@ -49,9 +49,9 @@ export const Route = createFileRoute("/")({
 });
 
 const MODES = [
-  { key: "secrets", label: "Secrets", icon: Sparkles, blurb: "Hidden feelings & mystery" },
-  { key: "love", label: "Love & Crush", icon: Heart, blurb: "Crush energy for fun" },
-  { key: "future", label: "Future & Vibe", icon: Wand2, blurb: "Personality & vibe read" },
+  { key: "secrets", label: "scan.mode.secrets", icon: Sparkles, blurb: "scan.blurb.secrets" },
+  { key: "love", label: "scan.mode.love", icon: Heart, blurb: "scan.blurb.love" },
+  { key: "future", label: "scan.mode.future", icon: Wand2, blurb: "scan.blurb.future" },
 ] as const;
 
 const RARITIES = ["Common", "Rare", "Epic", "Legendary", "Mythic"];
@@ -99,6 +99,7 @@ function generateAura(mode: AuraCard["mode"], photo?: string | null): AuraCard {
 
 function ScanPage() {
   const { state, update } = useVyzun();
+  const t = useT();
   const [mode, setMode] = useState<AuraCard["mode"]>("secrets");
   const [scanning, setScanning] = useState(false);
   const [card, setCard] = useState<AuraCard | null>(null);
@@ -167,7 +168,7 @@ function ScanPage() {
     } catch (error) {
       if (!mountedRef.current) return;
       setScanning(false);
-      setCameraError(error instanceof DOMException && error.name === "NotAllowedError" ? "Camera permission was declined. Allow camera access, then try again." : "Camera unavailable. Check your front camera and try again. Gallery photos are not used.");
+      setCameraError(error instanceof DOMException && error.name === "NotAllowedError" ? t("scan.errDenied") : t("scan.errUnavailable"));
     } finally {
       streamRef.current?.getTracks().forEach(t => t.stop());
       streamRef.current = null;
@@ -210,12 +211,12 @@ function ScanPage() {
               )}
             >
               <Icon className="h-4 w-4" />
-              {label}
+              {t(label)}
             </button>
           ))}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          {MODES.find((m) => m.key === mode)?.blurb} · AI entertainment experience, not a prediction.
+          {t(MODES.find((m) => m.key === mode)?.blurb ?? "scan.blurb.secrets")} · {t("scan.disclaimer")}
         </p>
 
          <div className="glass-card relative mt-5 aspect-[3/4] overflow-hidden">
@@ -236,7 +237,7 @@ function ScanPage() {
             <div className="anim-scanline absolute inset-x-6 top-1/2 h-16 bg-gradient-vyzun opacity-40 blur-md" />
           )}
           <p className="absolute inset-x-0 bottom-6 text-center text-xs text-muted-foreground">
-            {scanning ? "Reading your aura…" : "Align your face inside the frame"}
+            {scanning ? t("scan.reading") : t("scan.align")}
           </p>
         </div>
 
@@ -251,10 +252,10 @@ function ScanPage() {
           disabled={scanning}
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-vyzun py-3.5 font-semibold text-primary-foreground shadow-[var(--glow-cyan)] tap active:tap-active disabled:opacity-60"
         >
-          {scanning ? "Scanning…" : "📸 Start Live Face Scan"}
+          {scanning ? t("scan.scanning") : `📸 ${t("scan.start")}`}
         </Button>
         <p className="mt-2 text-center text-[11px] text-muted-foreground">
-          ⚡ Real-Time Camera Scan Only • Gallery Upload Disabled for Accuracy
+          ⚡ {t("scan.cameraOnly")}
         </p>
 
         {resultOpen && daily.day && (
@@ -268,7 +269,7 @@ function ScanPage() {
             onShared={daily.recordShare}
           />
         )}
-        {card && !resultOpen && <Button variant="outline" className="mt-4 w-full" onClick={() => setResultOpen(true)}><Sparkles />View your Aura Card</Button>}
+        {card && !resultOpen && <Button variant="outline" className="mt-4 w-full" onClick={() => setResultOpen(true)}><Sparkles />{t("scan.viewCard")}</Button>}
 
         <CrushMatcher />
       </main>
