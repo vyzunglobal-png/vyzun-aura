@@ -704,7 +704,7 @@
 @keyframes rv-pause-flash { 0% { opacity: 0; transform: scale(.8); } 30% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
 
 /* Glass bottom navigation */
-.nav-glass { background: color-mix(in oklab, var(--background) 72%, transparent); backdrop-filter: blur(20px) saturate(160%); border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px -18px oklch(0.55 0.25 300 / 45%); }
+.nav-glass { border-radius: 0; background: color-mix(in oklab, var(--background) 72%, transparent); backdrop-filter: blur(20px) saturate(160%); border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px -18px oklch(0.55 0.25 300 / 45%); }
 .nav-active-tile { border: 2px solid transparent; background: linear-gradient(var(--background), var(--background)) padding-box, var(--rv-ring) border-box; box-shadow: 0 0 16px -2px color-mix(in oklab, var(--rv-magenta) 70%, transparent), 0 0 18px -6px var(--rv-cyan); }
 .nav-underline { height: 3px; border-radius: 9999px; background: var(--rv-line); box-shadow: 0 0 8px var(--rv-magenta); }
 
