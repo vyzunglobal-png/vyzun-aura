@@ -1,6 +1,8 @@
 import { MORNING_RITUAL_TEXT } from "@/lib/use-aura-daily";
+import { useT } from "@/lib/vyzun-store";
 
 export function DailyAuraBanner({ streak, prompt, fresh, onOpen }: { streak: number; prompt: string; fresh: boolean; onOpen: () => void }) {
+  const t = useT();
   return (
     <button
       type="button"
@@ -18,7 +20,7 @@ export function DailyAuraBanner({ streak, prompt, fresh, onOpen }: { streak: num
           {fresh ? MORNING_RITUAL_TEXT : `Aura Flame ${streak} · ${prompt}`}
         </span>
       </span>
-      <span className="aura-banner-open shrink-0 rounded-full px-4 py-1.5 text-sm font-bold">Open</span>
+      <span className="aura-banner-open shrink-0 rounded-full px-4 py-1.5 text-sm font-bold">{t("banner.open")}</span>
     </button>
   );
 }
