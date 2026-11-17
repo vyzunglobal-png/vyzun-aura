@@ -284,27 +284,4 @@ export function useVyzun() {
   return ctx;
 }
 
-export const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "hi", label: "हिन्दी" },
-  { code: "bn", label: "বাংলা" },
-  { code: "ta", label: "தமிழ்" },
-  { code: "te", label: "తెలుగు" },
-  { code: "mr", label: "मराठी" },
-  { code: "es", label: "Español" },
-  { code: "pt", label: "Português" },
-  { code: "fr", label: "Français" },
-  { code: "de", label: "Deutsch" },
-  { code: "ar", label: "العربية" },
-  { code: "id", label: "Bahasa Indonesia" },
-  { code: "ja", label: "日本語" },
-  { code: "ko", label: "한국어" },
-  { code: "ru", label: "Русский" },
-  { code: "tr", label: "Türkçe" },
-  { code: "vi", label: "Tiếng Việt" },
-  { code: "zh", label: "中文" },
-  { code: "sw", label: "Kiswahili" },
-  { code: "fa", label: "فارسی" },
-];
-
-export const RTL_LANGUAGES = ["ar", "fa", "he", "ur"];
+export { LANGUAGES, RTL_LANGUAGES } from "@/lib/i18n";
