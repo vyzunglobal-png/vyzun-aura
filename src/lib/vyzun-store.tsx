@@ -224,7 +224,7 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<VyzunState>(defaultState);
 
   useEffect(() => {
-    let next = { ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) };
+    let next: VyzunState = { ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) };
     try {
       const raw = localStorage.getItem(KEY);
       if (raw) {

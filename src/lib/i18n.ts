@@ -1133,7 +1133,7 @@ export const DICTIONARIES: Record<LanguageCode, Dict> = { en, hi, es, fr, de, it
 export const RTL_LANGUAGES: readonly string[] = ["ar"];
 
 export function resolveLanguage(code: string | null | undefined): LanguageCode {
-  const base = (code ?? "en").toLowerCase().split("-")[0];
+  const base = (code ?? "en").toLowerCase().split("-")[0] ?? "en";
   return (base in DICTIONARIES ? base : "en") as LanguageCode;
 }
 
