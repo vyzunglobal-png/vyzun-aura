@@ -82,3 +82,4 @@ Store approval, complete privacy compliance and production safety certification 
 - [ ] Security hardening: run security scan, fix every finding.
 - [ ] Speed: smooth fast loading; check heavy screens.
 - [ ] VYZUN AI chat: show the VYZUN logo as its profile picture, filling the circle, with the outer blue ring removed.
+- [ ] Bottom tab bar: straight, flat, full-width top edge (no rounded corners) with a clean top line, in Light and Dark.
