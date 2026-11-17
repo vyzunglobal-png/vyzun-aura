@@ -10,7 +10,7 @@ export function LegalPage({ title, updated, intro, sections }: { title: string; 
   return (
     <div className="min-h-screen pb-28">
       <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-glass-border bg-background/85 px-5 py-4 backdrop-blur-md">
-        <Link to="/profile" search={{}} aria-label="Back" className="tap active:tap-active">
+        <Link to="/profile" search={{ u: undefined }} aria-label="Back" className="tap active:tap-active">
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <h1 className="font-display text-lg font-semibold">{title}</h1>
