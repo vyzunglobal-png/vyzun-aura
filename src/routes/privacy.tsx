@@ -39,7 +39,7 @@ function PrivacyPage() {
           body: (
             <ul className="list-disc space-y-1 pl-5">
               <li>To provide the app's features and keep your account signed in.</li>
-              <li>To keep the community safe: anonymous secrets and uploads are checked by automated moderation before delivery or publication.</li>
+              <li>To keep the community safe: anonymous secrets and uploaded Reels go through moderation before they are delivered or published.</li>
               <li>To answer VYZUN AI questions. Only the question you send is shared with our AI provider, never your private chats.</li>
               <li>We do not sell your personal information.</li>
             </ul>
