@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Check, Globe, Moon, Search, Shield, Smartphone, Sun, User } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
@@ -12,6 +13,7 @@ type Step = "theme" | "language" | "auth" | "profile";
 
 export function Onboarding() {
   const { state, update } = useVyzun();
+  const t = useT();
   const claim = useServerFn(claimProfile);
   const [step, setStep] = useState<Step>("theme");
   const [query, setQuery] = useState("");
@@ -272,6 +274,12 @@ export function Onboarding() {
               <p className="text-center text-[11px] text-muted-foreground">
                 Guest mode keeps your scans, Aura Cards and preferences on this device and syncs
                 supported data once you sign in.
+              </p>
+              <p className="text-center text-[11px] text-muted-foreground">
+                {t("onboarding.agree")}{" "}
+                <Link to="/terms" className="font-semibold text-cyan underline-offset-2 hover:underline">{t("settings.terms")}</Link>
+                {" · "}
+                <Link to="/privacy" className="font-semibold text-cyan underline-offset-2 hover:underline">{t("settings.privacyPolicy")}</Link>
               </p>
             </div>
           </section>
