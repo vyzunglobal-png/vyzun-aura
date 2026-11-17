@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ReelStudio } from "@/components/vyzun/ReelStudio";
 import { PaidActionSheet, type PaidAction } from "@/components/vyzun/PaidActionSheet";
-import { useVyzun } from "@/lib/vyzun-store";
+import { useT, useVyzun } from "@/lib/vyzun-store";
 import { CreatorDashboardSheet } from "@/components/vyzun/CreatorDashboardSheet";
 import { PrimeSheet } from "@/components/vyzun/PrimeSheet";
 import { SettingsSheet } from "@/components/vyzun/SettingsSheet";
@@ -53,6 +53,7 @@ export const Route = createFileRoute("/profile")({
 function ProfilePage() {
   const { state } = useVyzun();
   const { u } = Route.useSearch();
+  const tr = useT();
   const [tab, setTab] = useState<"posts" | "reels" | "aura">("posts");
   const [sheet, setSheet] = useState<null | "prime" | "creator" | "settings">(null);
   const [studioOpen, setStudioOpen] = useState(false);
@@ -90,9 +91,9 @@ function ProfilePage() {
 
         <div className="mt-5 grid grid-cols-3 gap-3 text-center">
           {[
-            { label: "Vibers", value: isSelf ? p.vibers : "—" },
-            { label: "Vibing", value: isSelf ? p.vibing : "—" },
-            { label: "Aura Cards", value: isSelf ? state.auraCards.length : "—" },
+            { label: tr("profile.vibers"), value: isSelf ? p.vibers : "—" },
+            { label: tr("profile.vibing"), value: isSelf ? p.vibing : "—" },
+            { label: tr("profile.auraCards"), value: isSelf ? state.auraCards.length : "—" },
           ].map((s) => (
             <div key={s.label} className="glass-card py-3">
               <p className="font-display text-lg font-bold">{s.value}</p>
@@ -104,14 +105,14 @@ function ProfilePage() {
         <div className="mt-4 flex gap-2">
           {isSelf ? (
             <Button variant="outline" onClick={() => setSheet("settings")} className="h-11 flex-1">
-              Edit Profile
+              {tr("profile.edit")}
             </Button>
           ) : (
             <>
               <VibeWithButton username={viewedHandle} />
               <Button asChild variant="outline" className="flex min-w-0 flex-1"><Link to="/messages">
                 <MessageCircle className="h-4 w-4 shrink-0" />
-                <span className="truncate">Message</span>
+                <span className="truncate">{tr("profile.message")}</span>
               </Link></Button>
             </>
           )}
@@ -151,8 +152,8 @@ function ProfilePage() {
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-vyzun"><Wallet2 className="h-5 w-5 text-primary-foreground" /></span>
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold">Creator Dashboard</span>
-                <span className="block text-[11px] text-muted-foreground">Missions · earnings · analytics</span>
+                <span className="block text-sm font-semibold">{tr("profile.creatorDashboard")}</span>
+                <span className="block text-[11px] text-muted-foreground">{tr("profile.creatorHint")}</span>
               </span>
               <span aria-hidden className="text-cyan">›</span>
             </button>
@@ -162,7 +163,7 @@ function ProfilePage() {
 
       <main className="mx-auto mt-6 max-w-lg px-5">
         <section className="mb-5 border-y border-glass-border py-3">
-          <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Crown className="h-5 w-5 text-gold" />Luxury Trophy Cabinet</h2>
+          <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Crown className="h-5 w-5 text-gold" />{tr("profile.trophies")}</h2>
           <div className="mt-3 grid grid-cols-3 gap-2.5" role="list" aria-label="Trophy badges">
             {[{ name: "Virtual Crown", price: "$49", icon: Crown }, { name: "Private Jet", price: "$199", icon: Plane }, { name: "Diamond Aura", price: "$499", icon: Gem }].map(({ name, price, icon: Icon }) => (
               <button
@@ -189,16 +190,16 @@ function ProfilePage() {
                 tab === t && "bg-gradient-vyzun text-primary-foreground",
               )}
             >
-              {t === "aura" ? "Aura Cards" : t === "posts" ? "Posts" : "Reels"}
+              {t === "aura" ? tr("profile.auraCards") : t === "posts" ? tr("profile.posts") : tr("profile.reels")}
             </Button>
           ))}
         </div>
 
-        {tab === "posts" && <div className="flex flex-col items-center gap-3 py-8 text-center"><MessageCircle className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">Your public posts live in Vibe Feed.</p><Button asChild className="bg-gradient-vyzun"><Link to="/secrets" search={{}}>Open Vibe Feed</Link></Button></div>}
+        {tab === "posts" && <div className="flex flex-col items-center gap-3 py-8 text-center"><MessageCircle className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">{tr("profile.postsEmpty")}</p><Button asChild className="bg-gradient-vyzun"><Link to="/secrets" search={{}}>{tr("profile.openFeed")}</Link></Button></div>}
 
         {tab === "reels" && (
           <div className="mt-4 flex flex-col items-center gap-3 py-8 text-center">
-            <Video className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">Your first Reel starts here.</p>
+            <Video className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">{tr("profile.reelsEmpty")}</p>
             <Button className="bg-gradient-vyzun" onClick={() => setStudioOpen(true)}>+ Create Reel</Button>
           </div>
         )}
@@ -206,7 +207,7 @@ function ProfilePage() {
         {tab === "aura" && (
           <div className="mt-4 space-y-2">
             {state.auraCards.length === 0 && (
-              <div className="flex flex-col items-center gap-3 py-8 text-center"><Sparkles className="h-8 w-8 text-magenta" /><p className="text-sm text-muted-foreground">No Aura Card yet!</p><Button asChild className="bg-gradient-vyzun"><Link to="/">Scan Face Now</Link></Button></div>
+              <div className="flex flex-col items-center gap-3 py-8 text-center"><Sparkles className="h-8 w-8 text-magenta" /><p className="text-sm text-muted-foreground">{tr("profile.noAura")}</p><Button asChild className="bg-gradient-vyzun"><Link to="/">{tr("profile.scanNow")}</Link></Button></div>
             )}
             {state.auraCards.map((c) => (
               <div key={c.id} className="glass-card flex items-center gap-3 p-4">
@@ -225,7 +226,7 @@ function ProfilePage() {
         {tab === "aura" && state.scans.length > 0 && (
           <div className="mt-4 space-y-2">
             {state.scans.length === 0 && (
-              <div className="flex flex-col items-center gap-3 py-8 text-center"><Camera className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">No scans yet.</p><Button asChild className="bg-gradient-vyzun"><Link to="/">Start Live Face Scan</Link></Button></div>
+              <div className="flex flex-col items-center gap-3 py-8 text-center"><Camera className="h-8 w-8 text-cyan" /><p className="text-sm text-muted-foreground">{tr("profile.noScans")}</p><Button asChild className="bg-gradient-vyzun"><Link to="/">{tr("scan.start")}</Link></Button></div>
             )}
             {state.scans.map((s) => (
               <div key={s.id} className="glass-card flex items-center justify-between p-4 text-sm">
@@ -240,7 +241,7 @@ function ProfilePage() {
 
       </main>
 
-      <ActionDialog title={qrOpen ? "Your VYZUN QR" : null} description="Share your anonymous inbox." onClose={() => setQrOpen(false)}>{qrLink && <><div className="mx-auto rounded-lg bg-primary-foreground p-4"><QRCodeSVG value={qrLink} size={200} /></div><p className="text-gradient-secret truncate text-sm font-bold">vyzun.app/ask/@{u ?? state.profile.username}</p><Button onClick={async () => { try { await navigator.clipboard.writeText(qrLink); setQrNotice("Link copied"); } catch { setQrNotice("Copy is unavailable. You can select the link above."); } }}>Copy Link</Button>{qrNotice && <p role="status" className="text-xs text-cyan">{qrNotice}</p>}</>}</ActionDialog>
+      <ActionDialog title={qrOpen ? "Your VYZUN QR" : null} description="Share your anonymous inbox." onClose={() => setQrOpen(false)}>{qrLink && <><div className="mx-auto rounded-lg bg-primary-foreground p-4"><QRCodeSVG value={qrLink} size={200} /></div><p className="text-gradient-secret truncate text-sm font-bold">vyzun.app/ask/@{u ?? state.profile.username}</p><Button onClick={async () => { try { await navigator.clipboard.writeText(qrLink); setQrNotice("Link copied"); } catch { setQrNotice("Copy is unavailable. You can select the link above."); } }}>{tr("profile.copyLink")}</Button>{qrNotice && <p role="status" className="text-xs text-cyan">{qrNotice}</p>}</>}</ActionDialog>
       <PrimeSheet open={sheet === "prime"} onClose={() => setSheet(null)} />
       <ReelStudio open={studioOpen} onClose={() => setStudioOpen(false)} />
       <PaidActionSheet action={paid} onClose={() => setPaid(null)} />
