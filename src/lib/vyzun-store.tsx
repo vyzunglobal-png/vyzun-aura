@@ -1,4 +1,5 @@
 import {
+import { isRtl, resolveLanguage, translate, type I18nKey } from "@/lib/i18n";
   createContext,
   useCallback,
   useContext,
@@ -223,7 +224,7 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<VyzunState>(defaultState);
 
   useEffect(() => {
-    let next = { ...defaultState(), hydrated: true };
+    let next = { ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) };
     try {
       const raw = localStorage.getItem(KEY);
       if (raw) {
@@ -261,6 +262,13 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
     root.classList.toggle("theme-light", state.theme === "light-glass");
   }, [state.theme]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const language = resolveLanguage(state.language);
+    root.lang = language;
+    root.dir = isRtl(language) ? "rtl" : "ltr";
+  }, [state.language]);
+
   const update = useCallback<Ctx["update"]>((patch) => {
     setState((s) => ({ ...s, ...(typeof patch === "function" ? patch(s) : patch) }));
   }, []);
@@ -271,11 +279,17 @@ export function VyzunProvider({ children }: { children: ReactNode }) {
     } catch {
       /* noop */
     }
-    setState({ ...defaultState(), hydrated: true });
+    setState({ ...defaultState(), hydrated: true, language: resolveLanguage(navigator.language) });
   }, []);
 
   const value = useMemo(() => ({ state, update, reset }), [state, update, reset]);
   return <VyzunContext.Provider value={value}>{children}</VyzunContext.Provider>;
+}
+
+/** Translator for the app's own UI text; never use it on user content. */
+export function useT() {
+  const { state } = useVyzun();
+  return useCallback((key: I18nKey) => translate(state.language, key), [state.language]);
 }
 
 export function useVyzun() {
