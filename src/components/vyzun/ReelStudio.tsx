@@ -8,6 +8,9 @@ import { useVyzunSession } from "@/hooks/use-vyzun-session";
 import { BEATS, audioBufferToWav, renderBeat, waveformPeaks } from "@/lib/studio/beats";
 import { captureCover, renderReel, type MusicChoice, type Overlay, type Segment } from "@/lib/studio/export";
 import { REEL_MEDIA_BUCKET } from "@/lib/reel-feed";
+import { useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { reviewMyReel } from "@/lib/reel-review.functions";
 import {
   DURATIONS, FILTERS, FONTS, HASHTAG_SUGGESTIONS, IMAGE_SEGMENT_SECONDS, MAX_CAPTION, MAX_TAGS, PRIVACY, STICKERS, TAG_STICKERS, TEXT_COLORS,
   extractHashtags, normalizeUsername, remainingSeconds, validateCaption, validateMediaFile,
@@ -486,6 +489,9 @@ function PublishStep({ segments, filter, overlays, music, total, userId, onBack,
   const [progress, setProgress] = useState<number | null>(null);
   const [status, setStatus] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   const [published, setPublished] = useState(false);
+  const [pendingReelId, setPendingReelId] = useState<string | null>(null);
+  const review = useServerFn(reviewMyReel);
+  const queryClient = useQueryClient();
   const abort = useRef<AbortController | null>(null);
   const first = segments[0];
   const captionError = validateCaption(caption);
@@ -550,9 +556,30 @@ function PublishStep({ segments, filter, overlays, music, total, userId, onBack,
       });
       if (error) { await supabase.storage.from(REEL_MEDIA_BUCKET).remove([videoPath, ...(coverPath ? [coverPath] : [])]); throw error; }
       setPublished(true);
-      setStatus({ tone: "ok", text: privacy === "secret_drop" ? "Saved as a Secret Drop — only you can see it." : "Submitted! Your Reel appears in the feed once it passes review." });
+      await runReview(id);
     } catch (e) {
       if (!(e instanceof DOMException && e.name === "AbortError")) setStatus({ tone: "error", text: "Publishing failed. Nothing was posted — please try again." });
+    }
+  }
+
+  /** AI safety check: safe Reels go live instantly; failures keep the Reel pending and retryable. */
+  async function runReview(id: string) {
+    setPendingReelId(id);
+    setStatus({ tone: "ok", text: "AI is checking your Reel…" });
+    try {
+      const { state } = await review({ data: { id } });
+      if (state === "approved") {
+        setPendingReelId(null);
+        void queryClient.invalidateQueries({ queryKey: ["reel-feed"] });
+        setStatus({ tone: "ok", text: privacy === "secret_drop" ? "Saved as a Secret Drop — only you can see it." : privacy === "friends" ? "Live! Your friends can see your Reel now." : "Live! Your Reel is now in the feed." });
+      } else if (state === "removed") {
+        setPendingReelId(null);
+        setStatus({ tone: "error", text: "This Reel breaks VYZUN’s community rules, so it wasn’t posted." });
+      } else {
+        setStatus({ tone: "error", text: "The AI check couldn’t finish. Your Reel is saved but not live yet — tap Check again." });
+      }
+    } catch {
+      setStatus({ tone: "error", text: "The AI check couldn’t finish. Your Reel is saved but not live yet — tap Check again." });
     }
   }
 
@@ -603,7 +630,7 @@ function PublishStep({ segments, filter, overlays, music, total, userId, onBack,
         {busy && <div className="space-y-1" role="status"><div className="studio-seg-rest h-2 overflow-hidden rounded-full"><div className="studio-seg h-full rounded-full" style={{ width: `${Math.round((progress ?? 0) * 100)}%` }} /></div><div className="flex justify-between text-xs"><span>Rendering your Reel… {Math.round((progress ?? 0) * 100)}%</span><button onClick={() => abort.current?.abort()} className="font-semibold text-destructive">Cancel</button></div></div>}
         {status && <p role={status.tone === "error" ? "alert" : "status"} className={cn("text-sm", status.tone === "error" ? "text-destructive" : "text-cyan")}>{status.text}</p>}
 
-        {published ? <Button variant="studioPrimary" onClick={onDone} className="h-12 w-full rounded-full text-base">Done</Button> : (
+        {published ? <div className="space-y-2">{pendingReelId && status?.tone === "error" && <Button variant="outline" onClick={() => void runReview(pendingReelId)} className="h-11 w-full rounded-full">Check again</Button>}<Button variant="studioPrimary" onClick={onDone} className="h-12 w-full rounded-full text-base">Done</Button></div> : (
           <div className="grid grid-cols-[auto_1fr] gap-2">
             <Button variant="studio" onClick={() => void saveToDevice()} disabled={busy} className="h-12 rounded-full px-4" aria-label="Save to device"><Download /></Button>
             <Button variant="studioPrimary" onClick={() => void publish()} disabled={busy || !!captionError} className="h-12 rounded-full text-base">{userId ? "Publish Reel" : "Sign in to publish"}</Button>
