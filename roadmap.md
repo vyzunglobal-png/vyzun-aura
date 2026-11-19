@@ -81,5 +81,7 @@ Store approval, complete privacy compliance and production safety certification 
 - [x] Privacy Policy + Terms pages, 13+ notice at sign-up, real permanent account deletion, data download. Legal text needs review by the owner's lawyer.
 - [x] Security: edit rules tightened on 8 tables, follows + likes private, like totals via safe counter, browser security headers. Kept intentionally public: approved public Reel videos, app config.
 - [ ] Speed: deeper performance pass on Reels/studio not done yet.
-- [x] VYZUN AI chat: logo fills a round picture, blue ring removed.
+- [x] VYZUN AI chat: blue ring removed (now square, see below).
 - [x] Bottom tab bar: flat, straight full-width top edge in Light and Dark.
+- [x] VYZUN AI chat picture: square (chakor) like the app logo, full logo clearly visible, not gold/round.
+- [x] Every chat's profile picture uses the same square shape as the Profile page picture.

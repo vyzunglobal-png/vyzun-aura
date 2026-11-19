@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, BadgeCheck, Crown, MapPin, MessageCircle, Phone, ScanFace, Search, Send, Video } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Crown, MapPin, Phone, ScanFace, Search, Send, Video } from "lucide-react";
 import { Logo } from "./Logo";
+import { ChatAvatar } from "@/components/vyzun/ChatAvatar";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useVyzunSession } from "@/hooks/use-vyzun-session";
@@ -128,7 +129,7 @@ export function MessagesView() {
       <button onClick={() => openAI()} className="glass-card relative w-full p-4 text-left shadow-[var(--glow-neon)] tap active:tap-active">
         <span aria-hidden className="bg-gradient-secret absolute right-3 top-3 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider text-primary-foreground">PINNED ›</span>
         <div className="flex items-center gap-3">
-          <span className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full"><Logo className="h-full w-full rounded-full object-cover" /></span>
+          <Logo className="h-14 w-14 shrink-0 rounded-[24%] object-cover" />
           <span className="min-w-0">
             <span className="flex items-center gap-2 font-semibold">✨ VYZUN AI <BadgeCheck className="h-4 w-4 text-cyan" /></span>
             <span className="block text-xs text-muted-foreground">Verified Vibe Guide · always pinned first</span>
@@ -148,13 +149,13 @@ export function MessagesView() {
         const person = threads.data?.people[thread.id];
         const unread = threads.data?.unread[thread.id] ?? 0;
         return <Button key={thread.id} variant="outline" onClick={() => { setActive(thread.id); setNotice(null); }} className="h-auto w-full justify-start gap-3 p-3">
-          <span className="squircle-glow grid h-11 w-11 shrink-0 place-items-center overflow-hidden bg-muted text-sm font-bold text-cyan">{person?.avatar_url ? <img src={person.avatar_url} alt="" className="h-full w-full object-cover" /> : person?.username?.[0]?.toUpperCase() ?? <MessageCircle className="h-4 w-4" />}</span>
+          <ChatAvatar username={person?.username} avatarUrl={person?.avatar_url} />
           <span className="min-w-0 flex-1 text-left"><span className="block truncate text-sm font-semibold">{person?.username ? `@${person.username}` : `Private chat ${i + 1}`}</span>{thread.last_message_at && <span className="block text-[11px] text-muted-foreground">Active {ago(thread.last_message_at)} ago</span>}</span>
           {unread > 0 && <span aria-label={`${unread} unread`} className="bg-gradient-secret grid h-5 min-w-5 place-items-center rounded-full px-1 text-[10px] font-bold text-primary-foreground">{unread > 9 ? "9+" : unread}</span>}
         </Button>;
       })}
     </> : <>
-      <div className="flex items-center justify-between gap-3"><Button variant="ghost" size="sm" onClick={() => { setActive(null); setNotice(null); }}><ArrowLeft className="h-4 w-4" />All chats</Button><h2 className="text-sm font-semibold">{active === "ai" ? "VYZUN AI" : "Private chat"}</h2>{active !== "ai" && <div className="flex gap-1"><Button variant="outline" size="icon" aria-label="Audio call" onClick={() => setNotice("Calling is not connected yet. No call was placed.")}><Phone className="h-4 w-4" /></Button><Button variant="outline" size="icon" aria-label="Video call" onClick={() => setNotice("Video calling is not connected yet. No call was placed.")}><Video className="h-4 w-4" /></Button></div>}</div>
+      <div className="flex items-center justify-between gap-3"><Button variant="ghost" size="sm" onClick={() => { setActive(null); setNotice(null); }}><ArrowLeft className="h-4 w-4" />All chats</Button><h2 className="flex min-w-0 items-center gap-2 text-sm font-semibold">{active === "ai" ? <><Logo className="h-9 w-9 shrink-0 rounded-[24%] object-cover" /><span className="truncate">VYZUN AI</span></> : <><ChatAvatar username={threads.data?.people[active]?.username} avatarUrl={threads.data?.people[active]?.avatar_url} className="h-9 w-9 text-sm" /><span className="truncate">{threads.data?.people[active]?.username ? `@${threads.data.people[active]!.username}` : "Private chat"}</span></>}</h2>{active !== "ai" && <div className="flex gap-1"><Button variant="outline" size="icon" aria-label="Audio call" onClick={() => setNotice("Calling is not connected yet. No call was placed.")}><Phone className="h-4 w-4" /></Button><Button variant="outline" size="icon" aria-label="Video call" onClick={() => setNotice("Video calling is not connected yet. No call was placed.")}><Video className="h-4 w-4" /></Button></div>}</div>
       {active === "ai" ? <>
         <div className="chat-ambience rounded-lg border border-magenta/30 p-4"><p className="text-sm leading-relaxed">Hey, I’m VYZUN AI ✨ your Verified Vibe Guide. Ask me anything about Reels, Face & QR scanning, Secrets, Aura Cards, the Campus Map, the Battle Pass or staying safe.</p><div className="mt-3 flex flex-wrap gap-2">{ICEBREAKERS.map(prompt => <Button key={prompt} size="sm" variant="outline" className="h-auto whitespace-normal rounded-full text-left text-xs" onClick={() => openAI(prompt)}>{prompt}</Button>)}</div><GuideActions actions={["map", "scan", "halo"]} onHalo={() => setPaid(VIP_HALO)} /></div>
         <div className="flex flex-wrap gap-2" role="group" aria-label="AI task">{TASKS.map(t => <Button key={t.key} size="sm" variant={task === t.key ? "default" : "outline"} onClick={() => setTask(t.key)}>{t.label}</Button>)}</div>

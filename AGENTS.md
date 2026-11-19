@@ -47,3 +47,4 @@ use the editor.
 - App UI text goes through `useT()`/`translate()` from `src/lib/i18n.ts`; every listed language must have every key (tested), brand names stay in Latin script and user content is never translated — keeps languages complete and the brand consistent.
 - Account deletion runs only through the authenticated `deleteMyAccount` server function, which deletes the caller's own auth user (app rows cascade) — clients can never delete other users.
 - Like totals are read through the `reel_like_counts` database function; reaction and follow rows are visible only to their owner — prevents exposing who liked or followed whom.
+- Chat profile pictures render through `ChatAvatar`, which mirrors the Profile picture's squircle frame — keeps chats and profiles visually identical.
