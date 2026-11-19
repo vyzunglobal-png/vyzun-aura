@@ -85,3 +85,4 @@ Store approval, complete privacy compliance and production safety certification 
 - [x] Bottom tab bar: flat, straight full-width top edge in Light and Dark.
 - [x] VYZUN AI chat picture: square (chakor) like the app logo, full logo clearly visible, not gold/round.
 - [x] Every chat's profile picture uses the same square shape as the Profile page picture.
+- [ ] Reels: new Reels wait for approval and there is no approval screen yet, so like/comment/Aura buttons never appear (waiting on the user's choice).
